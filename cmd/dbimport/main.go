@@ -5,14 +5,15 @@ import (
 	"os"
 
 	"database/sql"
+
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/infrastructure"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/vendor"
+	"github.com/sysdiglabs/prometheus-hub/pkg/app"
+	"github.com/sysdiglabs/prometheus-hub/pkg/infrastructure"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 
 	migrateDatabase(db)
 	importResources(db)
-	importVendors(db)
+	importApps(db)
 }
 
 func migrateDatabase(db *sql.DB) {
@@ -36,8 +37,8 @@ func migrateDatabase(db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	migrator, err := migrate.NewWithDatabaseInstance("file://db/migrations", "postgres", driver)
+	// TODO: Change this for production
+	migrator, err := migrate.NewWithDatabaseInstance("file://../../db/migrations", "postgres", driver)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -67,17 +68,17 @@ func importResources(db *sql.DB) {
 	}
 }
 
-func importVendors(db *sql.DB) {
-	log.Println("Importing vendors")
+func importApps(db *sql.DB) {
+	log.Println("Importing apps")
 
-	vendors, err := infrastructure.GetVendorsFromPath(os.Getenv("VENDOR_PATH"))
+	apps, err := infrastructure.GetAppsFromPath(os.Getenv("APPS_PATH"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	repository := vendor.NewPostgresRepository(db)
-	for _, vendor := range vendors {
-		err = repository.Save(vendor)
+	repository := app.NewPostgresRepository(db)
+	for _, app := range apps {
+		err = repository.Save(app)
 		if err != nil {
 			log.Println(err)
 		}

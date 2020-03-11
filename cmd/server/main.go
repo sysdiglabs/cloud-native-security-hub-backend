@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/falcosecurity/cloud-native-security-hub/web"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/sysdiglabs/prometheus-hub/web"
 )
 
 func main() {

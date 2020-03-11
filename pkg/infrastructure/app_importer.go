@@ -1,42 +1,43 @@
 package infrastructure
 
 import (
-	"gopkg.in/yaml.v2"
 	"os"
 	"path/filepath"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/vendor"
+	"gopkg.in/yaml.v2"
+
+	"github.com/sysdiglabs/prometheus-hub/pkg/app"
 )
 
-func GetVendorsFromPath(path string) ([]*vendor.Vendor, error) {
+func GetAppsFromPath(path string) ([]*app.App, error) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return nil, err
 	}
 
-	var vendors []*vendor.Vendor
+	var apps []*app.App
 
 	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if filepath.Ext(path) == ".yaml" {
-			vendor, err := getVendorFromFile(path)
+			app, err := getAppFromFile(path)
 			if err != nil {
 				return err
 			}
-			vendors = append(vendors, &vendor)
+			apps = append(apps, &app)
 		}
 		return nil
 	})
 
-	return vendors, nil
+	return apps, nil
 }
 
-func getVendorFromFile(path string) (vendor vendor.Vendor, err error) {
+func getAppFromFile(path string) (app app.App, err error) {
 	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	defer file.Close()
 	if err != nil {
 		return
 	}
 
-	err = yaml.NewDecoder(file).Decode(&vendor)
+	err = yaml.NewDecoder(file).Decode(&app)
 	if err != nil {
 		return
 	}

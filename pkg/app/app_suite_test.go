@@ -1,4 +1,4 @@
-package vendor_test
+package app_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestVendor(t *testing.T) {
+func TestApp(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Vendor Suite")
+	RunSpecs(t, "App Suite")
 }

@@ -4,10 +4,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/falcosecurity/cloud-native-security-hub/test/fixtures/resources"
-
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/infrastructure"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/pkg/infrastructure"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
 )
 
 var _ = Describe("Resource importation from YAML files", func() {
@@ -16,9 +15,8 @@ var _ = Describe("Resource importation from YAML files", func() {
 		parsed, _ := infrastructure.GetResourcesFromPath(path)
 
 		Expect(parsed).To(Equal([]*resource.Resource{
-			resources.ApacheWithoutAvailableVersions(),
-			resources.MongoDBWithoutAvailableVersions(),
-			resources.TrustedRegistriesImagesWithoutAvailableVersions(),
+			resources.AwsFargateAlertsWithoutAvailableVersions(),
+			resources.AwsFargateDescriptionWithoutAvailableVersions(),
 		}))
 	})
 

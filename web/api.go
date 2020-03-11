@@ -9,8 +9,7 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/usecases"
+	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
 )
 
 type HandlerRepository interface {
@@ -20,14 +19,13 @@ type HandlerRepository interface {
 	retrieveAllResourcesHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params)
 
 	retrieveOneResourcesHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
-	retrieveFalcoRulesForHelmChartHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
 
 	retrieveOneResourceByVersionHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
-	retrieveFalcoRulesForHelmChartByVersionHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
 
-	retrieveAllVendorsHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params)
-	retrieveOneVendorsHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
-	retrieveAllResourcesFromVendorHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
+	retrieveAllAppsHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params)
+
+	retrieveOneAppHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
+	retrieveAllResourcesFromAppHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params)
 }
 
 type handlerRepository struct {
@@ -115,27 +113,6 @@ func parseKind(slug string) (string, error) {
 	}
 }
 
-func (h *handlerRepository) retrieveFalcoRulesForHelmChartHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	if params.ByName("kind") != "falco-rules" {
-		writer.WriteHeader(400)
-		h.logRequest(request, 400)
-		writer.Write([]byte(errors.New(fmt.Sprintf("This operation is only allowed for falco-rules")).Error()))
-		return
-	}
-
-	useCase := h.factory.NewRetrieveFalcoRulesForHelmChartUseCase()
-	content, err := useCase.Execute(params.ByName("resource"))
-	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
-		writer.Write([]byte(err.Error()))
-		return
-	}
-	writer.Header().Set("Content-Type", "application/x-yaml")
-	h.logRequest(request, 200)
-	writer.Write(content)
-}
-
 func (h *handlerRepository) retrieveOneResourceByVersionHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	kind, err := parseKind(params.ByName("kind"))
 	if err != nil {
@@ -157,30 +134,9 @@ func (h *handlerRepository) retrieveOneResourceByVersionHandler(writer http.Resp
 	json.NewEncoder(writer).Encode(resource.NewResourceDTO(resources))
 }
 
-func (h *handlerRepository) retrieveFalcoRulesForHelmChartByVersionHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	if params.ByName("kind") != "falco-rules" {
-		writer.WriteHeader(400)
-		h.logRequest(request, 400)
-		writer.Write([]byte(errors.New(fmt.Sprintf("This operation is only allowed for falco-rules")).Error()))
-		return
-	}
-
-	useCase := h.factory.NewRetrieveFalcoRulesForHelmChartByVersionUseCase()
-	content, err := useCase.Execute(params.ByName("resource"), params.ByName("version"))
-	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
-		writer.Write([]byte(err.Error()))
-		return
-	}
-	writer.Header().Set("Content-Type", "application/x-yaml")
-	h.logRequest(request, 200)
-	writer.Write(content)
-}
-
-func (h *handlerRepository) retrieveAllVendorsHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
-	useCase := h.factory.NewRetrieveAllVendorsUseCase()
-	vendors, err := useCase.Execute()
+func (h *handlerRepository) retrieveAllAppsHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	useCase := h.factory.NewRetrieveAllAppsUseCase()
+	apps, err := useCase.Execute()
 	if err != nil {
 		writer.WriteHeader(500)
 		h.logRequest(request, 500)
@@ -189,10 +145,10 @@ func (h *handlerRepository) retrieveAllVendorsHandler(writer http.ResponseWriter
 	}
 	writer.Header().Set("Content-Type", "application/json")
 	h.logRequest(request, 200)
-	json.NewEncoder(writer).Encode(vendors)
+	json.NewEncoder(writer).Encode(apps)
 }
 
-func (h *handlerRepository) retrieveOneVendorsHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func (h *handlerRepository) retrieveOneAppHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	useCase := h.factory.NewRetrieveOneVendorUseCase()
 	vendor, err := useCase.Execute(params.ByName("vendor"))
 	if err != nil {
@@ -206,7 +162,7 @@ func (h *handlerRepository) retrieveOneVendorsHandler(writer http.ResponseWriter
 	json.NewEncoder(writer).Encode(vendor)
 }
 
-func (h *handlerRepository) retrieveAllResourcesFromVendorHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func (h *handlerRepository) retrieveAllResourcesFromAppHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 	useCase := h.factory.NewRetrieveAllResourcesFromVendorUseCase()
 	resources, err := useCase.Execute(params.ByName("vendor"))
 	if err != nil {

@@ -1,11 +1,12 @@
 package infrastructure
 
 import (
-	"gopkg.in/yaml.v2"
 	"os"
 	"path/filepath"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
+	"gopkg.in/yaml.v2"
+
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
 )
 
 func GetResourcesFromPath(path string) ([]*resource.Resource, error) {

@@ -1,9 +1,4 @@
-package usecases
-
-import (
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-)
-
+package usecases /*
 type RetrieveOneResourceByVersion struct {
 	ResourceRepository resource.Repository
 }
@@ -13,3 +8,4 @@ func (r *RetrieveOneResourceByVersion) Execute(resourceID, kind, version string)
 		resource.NewResourceID(resourceID, kind),
 		version)
 }
+*/

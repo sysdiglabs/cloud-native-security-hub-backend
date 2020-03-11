@@ -10,11 +10,11 @@ import (
 	"github.com/falcosecurity/cloud-native-security-hub/test/fixtures/resources"
 )
 
-var _ = Describe("RetrieveAllResourcesFromVendor use case", func() {
-	var useCase usecases.RetrieveAllResourcesFromVendor
+var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
+	var useCase usecases.RetrieveAllResourcesFromApp
 
 	BeforeEach(func() {
-		useCase = usecases.RetrieveAllResourcesFromVendor{
+		useCase = usecases.RetrieveAllResourcesFromApp{
 			ResourceRepository: newResourceRepositoryWithoutMongoDB(),
 			VendorRepository:   NewVendorRepository(),
 		}
