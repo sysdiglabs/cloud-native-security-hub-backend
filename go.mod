@@ -1,4 +1,4 @@
-module github.com/falcosecurity/cloud-native-security-hub
+module github.com/sysdiglabs/prometheus-hub
 
 go 1.13
 
