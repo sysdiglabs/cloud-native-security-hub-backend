@@ -1,7 +1,5 @@
-module github.com/falcosecurity/cloud-native-security-hub
-
+module github.com/sysdiglabs/prometheus-hub
 go 1.13
-
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/golang-migrate/migrate/v4 v4.7.0
