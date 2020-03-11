@@ -2,25 +2,25 @@ apiVersion: networking.gke.io/v1beta1
 kind: ManagedCertificate
 metadata:
   name: backend
-  namespace: securityhub
+  namespace: promhub
 spec:
   domains:
-    - api.securityhub.dev
+    - api.promhub.io
 ---
 apiVersion: networking.gke.io/v1beta1
 kind: ManagedCertificate
 metadata:
   name: frontend
-  namespace: securityhub
+  namespace: promhub
 spec:
   domains:
-    - securityhub.dev
+    - promhub.io
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: backend
-  namespace: securityhub
+  namespace: promhub
   annotations:
     networking.gke.io/managed-certificates: backend
 spec:
@@ -35,7 +35,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: frontend
-  namespace: securityhub
+  namespace: promhub
   annotations:
     networking.gke.io/managed-certificates: frontend
 spec:

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: wait-script
-  namespace: securityhub
+  namespace: promhub
   labels:
     name: wait-script
 data:
@@ -20,7 +20,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: dbimport
-  namespace: securityhub
+  namespace: promhub
   labels:
     app: dbimport
 spec:
@@ -38,15 +38,15 @@ spec:
       restartPolicy: Never
       containers:
       - name: dbimport
-        image: gcr.io/mateo-burillo-ns/securityhub-dbimport:latest
+        image: gcr.io/mateo-burillo-ns/promhub-dbimport:latest
         imagePullPolicy: Always
         command: ["/bin/sh", "-c", "sleep 10 && /bin/dbimport && touch /resources/file.unlock"]
         env:
           - name: DATABASE_URL
             valueFrom:
               secretKeyRef:
-                name: securityhub
-                key: database_url
+                name: promhub
+                key: database-url
           - name: RESOURCES_PATH
             value: /resources/resources
           - name: VENDOR_PATH
@@ -55,7 +55,7 @@ spec:
           - name: resources
             mountPath: /resources
       - name: resources
-        image: gcr.io/mateo-burillo-ns/securityhub-resources:latest
+        image: gcr.io/mateo-burillo-ns/promhub-resources:latest
         command: ["/bin/sh", "-c", "cp -r /resources/* /shared-resources && /bin/sh /wait/wait.sh"]
         volumeMounts:
           - name: resources
