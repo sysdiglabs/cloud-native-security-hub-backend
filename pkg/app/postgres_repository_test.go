@@ -23,7 +23,7 @@ var _ = Describe("Postgres App Repository", func() {
 	It("saves a new app", func() {
 		repository.Save(apps.AwsFargate())
 
-		retrieved, _ := repository.FindById("aws-fargate")
+		retrieved, _ := repository.FindById("AWS Fargate")
 
 		Expect(retrieved).To(Equal(apps.AwsFargate()))
 	})

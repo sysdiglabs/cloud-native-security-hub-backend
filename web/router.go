@@ -27,13 +27,13 @@ func registerOn(router *httprouter.Router, logger *log.Logger) {
 
 	router.GET("/resources", h.retrieveAllResourcesHandler)
 
-	router.GET("/resources/:kind/:resource", h.retrieveOneResourcesHandler)
-	router.GET("/resources/:kind/:resource/version/:version", h.retrieveOneResourceByVersionHandler)
+	router.GET("/resources/:kind/:app/:appVersion", h.retrieveOneResourcesHandler)
+	router.GET("/resources/:kind/:app/:appVersion/:version", h.retrieveOneResourceByVersionHandler)
 
 	router.GET("/apps", h.retrieveAllAppsHandler)
 
 	router.GET("/apps/:app", h.retrieveOneAppHandler)
-	router.GET("/apps/:app/resources", h.retrieveAllResourcesFromAppHandler)
+	router.GET("/apps/:app/:appVersion/resources", h.retrieveAllResourcesFromAppHandler)
 
 	router.GET("/health", h.healthCheckHandler)
 	router.NotFound = h.notFound()

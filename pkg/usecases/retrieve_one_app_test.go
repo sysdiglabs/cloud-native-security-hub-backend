@@ -19,7 +19,7 @@ var _ = Describe("RetrieveOneApp use case", func() {
 	})
 
 	It("returns one app", func() {
-		result, _ := useCase.Execute("aws-fargate")
+		result, _ := useCase.Execute("AWS Fargate")
 
 		Expect(result).To(Equal(apps.AwsFargate()))
 	})

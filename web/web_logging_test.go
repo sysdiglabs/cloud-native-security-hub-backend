@@ -9,12 +9,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/falcosecurity/cloud-native-security-hub/web"
+	"github.com/sysdiglabs/prometheus-hub/web"
 )
 
 var _ = Describe("HTTP Server Logging", func() {
 	It("is logging requests", func() {
-		request, _ := http.NewRequest("GET", "/resources/falco-rules/apache/custom-rules.yaml", nil)
+		request, _ := http.NewRequest("GET", "/resources/Description/apache/custom-rules.yaml", nil)
 		recorder := httptest.NewRecorder()
 
 		buff := &bytes.Buffer{}
