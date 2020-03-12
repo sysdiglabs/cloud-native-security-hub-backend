@@ -38,7 +38,7 @@ func migrateDatabase(db *sql.DB) {
 		log.Fatal(err)
 	}
 	// TODO: Change this for production
-	migrator, err := migrate.NewWithDatabaseInstance("file://../../db/migrations", "postgres", driver)
+	migrator, err := migrate.NewWithDatabaseInstance("file://db/migrations", "postgres", driver)
 	if err != nil {
 		log.Fatal(err)
 	}

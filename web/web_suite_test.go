@@ -14,7 +14,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/falcosecurity/cloud-native-security-hub/web"
+	"github.com/sysdiglabs/prometheus-hub/web"
 )
 
 func TestWeb(t *testing.T) {

@@ -23,7 +23,7 @@ type App struct {
 	Kind              Kind     `json:"kind" yaml:"kind"`
 	Name              string   `json:"name" yaml:"name"`
 	Keywords          []string `json:"keywords" yaml:"keywords"`
-	VersionsAvailable []string `json:"versionsAvailable" yaml:"versionsAvailable"`
+	AvailableVersions []string `json:"availableVersions" yaml:"availableVersions"`
 	Description       string   `json:"description" yaml:"description"`
 	ShortDescription  string   `json:"shortDescription" yaml:"shortDescription"`
 	Icon              string   `json:"icon" yaml:"icon"`

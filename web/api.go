@@ -2,13 +2,13 @@ package web
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
 	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
 )
 
@@ -47,6 +47,7 @@ func (h *handlerRepository) notFound() http.HandlerFunc {
 	}
 
 }
+
 func (h *handlerRepository) logRequest(request *http.Request, statusCode int) {
 	if h.logger == nil {
 		return
@@ -56,7 +57,10 @@ func (h *handlerRepository) logRequest(request *http.Request, statusCode int) {
 	h.logger.Println(line)
 }
 
-func (h *handlerRepository) retrieveAllResourcesHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func (h *handlerRepository) retrieveAllResourcesHandler(
+	writer http.ResponseWriter,
+	request *http.Request,
+	_ httprouter.Params) {
 	useCase := h.factory.NewRetrieveAllResourcesUseCase()
 	resources, err := useCase.Execute()
 	if err != nil {
@@ -81,16 +85,16 @@ func collectionToDTO(resources []*resource.Resource) []*resource.ResourceDTO {
 	return result
 }
 
-func (h *handlerRepository) retrieveOneResourcesHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	kind, err := parseKind(params.ByName("kind"))
-	if err != nil {
-		writer.WriteHeader(404)
-		h.logRequest(request, 404)
-		writer.Write([]byte(err.Error()))
-		return
-	}
+func (h *handlerRepository) retrieveOneResourcesHandler(
+	writer http.ResponseWriter,
+	request *http.Request,
+	params httprouter.Params) {
+
 	useCase := h.factory.NewRetrieveOneResourceUseCase()
-	resources, err := useCase.Execute(params.ByName("resource"), kind)
+	resources, err := useCase.Execute(
+		params.ByName("app"),
+		params.ByName("kind"),
+		params.ByName("appVersion"))
 	if err != nil {
 		writer.WriteHeader(500)
 		h.logRequest(request, 500)
@@ -102,27 +106,16 @@ func (h *handlerRepository) retrieveOneResourcesHandler(writer http.ResponseWrit
 	json.NewEncoder(writer).Encode(resource.NewResourceDTO(resources))
 }
 
-func parseKind(slug string) (string, error) {
-	switch slug {
-	case "falco-rules":
-		return resource.FalcoRules, nil
-	case "open-policy-agent-policies":
-		return resource.OpenPolicyAgentPolicies, nil
-	default:
-		return "", errors.New(fmt.Sprintf("%s is not a valid kind type", slug))
-	}
-}
-
-func (h *handlerRepository) retrieveOneResourceByVersionHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	kind, err := parseKind(params.ByName("kind"))
-	if err != nil {
-		writer.WriteHeader(404)
-		h.logRequest(request, 404)
-		writer.Write([]byte(err.Error()))
-		return
-	}
+func (h *handlerRepository) retrieveOneResourceByVersionHandler(
+	writer http.ResponseWriter,
+	request *http.Request,
+	params httprouter.Params) {
 	useCase := h.factory.NewRetrieveOneResourceByVersionUseCase()
-	resources, err := useCase.Execute(params.ByName("resource"), kind, params.ByName("version"))
+	resources, err := useCase.Execute(
+		params.ByName("app"),
+		params.ByName("kind"),
+		params.ByName("appVersion"),
+		params.ByName("version"))
 	if err != nil {
 		writer.WriteHeader(500)
 		h.logRequest(request, 500)
@@ -134,7 +127,10 @@ func (h *handlerRepository) retrieveOneResourceByVersionHandler(writer http.Resp
 	json.NewEncoder(writer).Encode(resource.NewResourceDTO(resources))
 }
 
-func (h *handlerRepository) retrieveAllAppsHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func (h *handlerRepository) retrieveAllAppsHandler(
+	writer http.ResponseWriter,
+	request *http.Request,
+	_ httprouter.Params) {
 	useCase := h.factory.NewRetrieveAllAppsUseCase()
 	apps, err := useCase.Execute()
 	if err != nil {
@@ -148,9 +144,12 @@ func (h *handlerRepository) retrieveAllAppsHandler(writer http.ResponseWriter, r
 	json.NewEncoder(writer).Encode(apps)
 }
 
-func (h *handlerRepository) retrieveOneAppHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	useCase := h.factory.NewRetrieveOneVendorUseCase()
-	vendor, err := useCase.Execute(params.ByName("vendor"))
+func (h *handlerRepository) retrieveOneAppHandler(
+	writer http.ResponseWriter,
+	request *http.Request,
+	params httprouter.Params) {
+	useCase := h.factory.NewRetrieveOneAppUseCase()
+	vendor, err := useCase.Execute(params.ByName("app"))
 	if err != nil {
 		writer.WriteHeader(500)
 		h.logRequest(request, 500)
@@ -162,9 +161,12 @@ func (h *handlerRepository) retrieveOneAppHandler(writer http.ResponseWriter, re
 	json.NewEncoder(writer).Encode(vendor)
 }
 
-func (h *handlerRepository) retrieveAllResourcesFromAppHandler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-	useCase := h.factory.NewRetrieveAllResourcesFromVendorUseCase()
-	resources, err := useCase.Execute(params.ByName("vendor"))
+func (h *handlerRepository) retrieveAllResourcesFromAppHandler(
+	writer http.ResponseWriter,
+	request *http.Request,
+	params httprouter.Params) {
+	useCase := h.factory.NewRetrieveAllResourcesFromAppUseCase()
+	resources, err := useCase.Execute(params.ByName("app"))
 	if err != nil {
 		writer.WriteHeader(500)
 		h.logRequest(request, 500)

@@ -16,7 +16,7 @@ func (r *MemoryRepository) FindAll() ([]*App, error) {
 
 func (r *MemoryRepository) FindById(id string) (*App, error) {
 	for _, res := range r.app {
-		if res.ID == id {
+		if res.Name == id {
 			return res, nil
 		}
 	}

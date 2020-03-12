@@ -26,7 +26,7 @@ var _ = Describe("Postgres Resource Repository", func() {
 	It("saves a new resource", func() {
 		repository.Save(resources.AwsFargateDescription())
 
-		retrieved, _ := repository.FindById(resource.NewResourceID("aws-fargate",
+		retrieved, _ := repository.FindById(resource.NewResourceID("AWS Fargate",
 			"Description",
 			[]string{"1.0.0", "1.0.1"}))
 		Expect(retrieved).To(Equal(resources.AwsFargateDescription()))
@@ -70,7 +70,7 @@ var _ = Describe("Postgres Resource Repository", func() {
 			fargateDescription.Version = "2.0.0"
 			repository.Save(fargateDescription)
 
-			retrieved, _ := repository.FindById(resource.NewResourceID("aws-fargate", "Description", []string{"1.0.0"}))
+			retrieved, _ := repository.FindById(resource.NewResourceID("AWS Fargate", "Description", []string{"1.0.0"}))
 
 			expected := resources.AwsFargateDescription()
 			expected.Version = "2.0.0"
@@ -86,7 +86,7 @@ var _ = Describe("Postgres Resource Repository", func() {
 				fargateDescription.Version = "2.0.0"
 				repository.Save(fargateDescription)
 
-				retrieved, _ := repository.FindByVersion(resource.NewResourceID("aws-fargate", "Description", []string{"1.0.0"}), "1.0.0")
+				retrieved, _ := repository.FindByVersion(resource.NewResourceID("AWS Fargate", "Description", []string{"1.0.0"}), "1.0.0")
 
 				expected := resources.AwsFargateDescription()
 				expected.AvailableVersions = []string{"2.0.0", "1.0.0"}
@@ -103,7 +103,7 @@ var _ = Describe("Postgres Resource Repository", func() {
 			fargateDescription.Version = "2.0.0"
 			repository.Save(fargateDescription)
 
-			retrieved, _ := repository.FindById(resource.NewResourceID("aws-fargate", "Description", []string{"1.0.0"}))
+			retrieved, _ := repository.FindById(resource.NewResourceID("AWS Fargate", "Description", []string{"1.0.0"}))
 
 			Expect(retrieved.AvailableVersions).To(Equal([]string{"2.0.0", "1.0.0"}))
 		})

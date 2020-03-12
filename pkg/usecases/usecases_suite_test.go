@@ -18,7 +18,7 @@ func TestUsecases(t *testing.T) {
 
 func NewResourceRepository() resource.Repository {
 	return resource.NewMemoryRepository(
-		[]*resource.Resource{resources.AwsFargateDescription(), resources.AwsFargateAlerts < s()},
+		[]*resource.Resource{resources.AwsFargateDescription(), resources.AwsFargateAlerts()},
 	)
 }
 

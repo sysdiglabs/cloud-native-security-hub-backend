@@ -55,3 +55,29 @@ func AwsFargateAlertsWithoutAvailableVersions() *resource.Resource {
 		Data: "# AWS Fargate\nAlerts.",
 	}
 }
+
+func AwsLambdaeDescription() *resource.Resource {
+	result := AwsLambdaDescriptionWithoutAvailableVersions()
+	result.AvailableVersions = []string{"1.0.0"}
+
+	return result
+}
+
+func AwsLambdaDescriptionWithoutAvailableVersions() *resource.Resource {
+	return &resource.Resource{
+		ID: resource.NewResourceID("AWS Lambda",
+			"Description",
+			[]string{"1.0.0", "1.0.1"}),
+		Kind:       "Description",
+		App:        "AWS Lambda",
+		Version:    "1.0.0",
+		AppVersion: []string{"1.0.0", "1.0.1"},
+		Maintainers: []*resource.Maintainer{
+			{
+				Name: "sysdiglabs",
+				Link: "github.com/sysdiglabs",
+			},
+		},
+		Data: "# AWS Lambda\nDescription.",
+	}
+}

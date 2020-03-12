@@ -4,10 +4,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/usecases"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
 
-	"github.com/falcosecurity/cloud-native-security-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
 )
 
 var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
@@ -15,19 +15,19 @@ var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
 
 	BeforeEach(func() {
 		useCase = usecases.RetrieveAllResourcesFromApp{
-			ResourceRepository: newResourceRepositoryWithoutMongoDB(),
-			VendorRepository:   NewVendorRepository(),
+			ResourceRepository: newResourceRepositoryWithoutLambda(),
+			AppRepository:      NewAppRepository(),
 		}
 	})
 
-	It("returns all the avaliable resources for a vendor", func() {
-		retrieved, _ := useCase.Execute("apache")
+	It("returns all the avaliable resources for an App", func() {
+		retrieved, _ := useCase.Execute("AWS Fargate")
 
-		Expect(retrieved).To(Equal([]*resource.Resource{resources.Apache()}))
+		Expect(retrieved).To(Equal([]*resource.Resource{resources.AwsFargateDescription()}))
 	})
 
-	Context("when vendor does not exist", func() {
-		It("returns vendor not found error", func() {
+	Context("when App does not exist", func() {
+		It("returns App not found error", func() {
 			retrieved, err := useCase.Execute("not-found")
 
 			Expect(retrieved).To(BeEmpty())
@@ -35,18 +35,18 @@ var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
 		})
 	})
 
-	PContext("when vendor doesn't have resources", func() {
+	Context("when vendor doesn't have resources", func() {
 		It("returns an empty resource collection", func() {
-			retrieved, err := useCase.Execute("mongo")
+			retrieved, err := useCase.Execute("lambda")
 
 			Expect(retrieved).To(BeEmpty())
-			Expect(err).To(Succeed())
+			Expect(err).To(HaveOccurred())
 		})
 	})
 })
 
-func newResourceRepositoryWithoutMongoDB() resource.Repository {
+func newResourceRepositoryWithoutLambda() resource.Repository {
 	return resource.NewMemoryRepository(
-		[]*resource.Resource{resources.Apache()},
+		[]*resource.Resource{resources.AwsFargateDescription()},
 	)
 }
