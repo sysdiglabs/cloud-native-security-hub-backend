@@ -1,5 +1,5 @@
 FROM golang:1.13 as builder
-WORKDIR /cloud-native-visiblity-hub-backend
+WORKDIR /prometheus-hub-backend
 COPY go.mod go.sum ./
 COPY . .
 RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-s" -o dbimport cmd/dbimport/main.go
@@ -7,5 +7,5 @@ RUN strip dbimport
 
 FROM alpine:3.10
 COPY db /db
-COPY --from=builder /cloud-native-visiblity-hub-backend/dbimport /bin/dbimport
+COPY --from=builder /prometheus-hub-backend/dbimport /bin/dbimport
 CMD ["/bin/dbimport"]
