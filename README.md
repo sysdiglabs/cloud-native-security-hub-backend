@@ -1,12 +1,12 @@
-# Cloud Native Security Hub
+# Prometheus Hub
 
-![last commit](https://flat.badgen.net/github/last-commit/falcosecurity/cloud-native-security-hub-backend?icon=github) ![licence](https://flat.badgen.net/github/license/falcosecurity/cloud-native-security-hub-backend)
+![last commit](https://flat.badgen.net/github/last-commit/sysdiglabs/prometheus-hub-backend?icon=github) ![licence](https://flat.badgen.net/github/license/sysdiglabs/prometheus-hub-backend)
 
-Cloud Native Security Hub is a platform for discovering and sharing rules and
-configurations for cloud native security tools.
+Prometheus Hub is a platform for discovering and sharing rules and 
+configurations for monitoring cloud native applications.
 
 This repository contains the HTTP API and backend code that runs the
-https://securityhub.dev site
+https://promhub.io site
 
 ## Usage
 
@@ -29,15 +29,40 @@ This is the HTTP API server and it will listen to requests on the `8080` port.
 $ go run cmd/server/main.go
 ```
 
+### Endpoints of the API
+
+```
+URL: /apps
+RESPONSE: JSON with all the apps
+
+URL: /apps/:app
+RESPONSE: JSON with a specific 'app'
+
+URL: /apps/:app/:appVersion/resources
+RESPONSE: JSON with all the resources for a specific 'version' of an 'app'
+
+URL: /resources
+RESPONSE: JSON with all the resources
+
+URL: /resources/:kind/:app/:appVersion
+RESPONSE: JSON with the latest version of the 'kind' of resource for a specific 'version' of an 'app' 
+
+URL: /resources/:kind/:app/:appVersion/:version
+RESPONSE: JSON with the specific 'version' of the 'kind' of resource for a specific 'version' of an 'app' 
+```
+
+> In case of error or not resources or apps found, the API returns 404 error code. 
+
+
 ### cmd/dbimport
 
 You need to setup a couple of environment variables previously to import any
 data in the database:
 
-* `RESOURCES_PATH`: Path to securityhub/resources directory
-* `VENDOR_PATH`: Path to securityhub/vendors directory
+* `RESOURCES_PATH`: Path to prometheus-hub-resources/resources directory
+* `APPS_PATH`: Path to prometheus-hub-resources/apps directory
 
-These directories can be found in the [Cloud Native Security Hub Resources repository](https://github.com/falcosecurity/cloud-native-security-hub).
+These directories can be found in the [Prometheus Hub Resources repository](https://github.com/sysdiglabs/prometheus-hub-resources).
 
 Then with the `DATABASE_URL` set, execute:
 
@@ -54,8 +79,8 @@ some design decisions:
 
 * `pkg/usecases`: You will find the entry points in the `pkg/usecases` directory.
   One action per file, modeled like a command.
-* `pkg/resource` and `pkg/vendor`: This is the domain code for security resources
-  and vendors. You will find the repositories, entities and value objects.
+* `pkg/resource` and `pkg/apps`: This is the domain code for security resources
+  and apps. You will find the repositories, entities and value objects.
 * `test`: All our code is test driven, in this directory we have some fixtures
   to avoid repeating test data in the test code.
 * `web`: The web is just a delivery mechanism, it is separated from the backend code

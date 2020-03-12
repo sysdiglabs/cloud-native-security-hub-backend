@@ -7,59 +7,59 @@ import (
 	"net/http"
 )
 
-var _ = Describe("HTTP API for vendors", func() {
-	Context("GET /vendors", func() {
+var _ = Describe("HTTP API for apps", func() {
+	Context("GET /apps", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/vendors")
+			response := doGetRequest("/apps")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/vendors")
+			response := doGetRequest("/apps")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
 	})
 
-	Context("GET /vendors/:name", func() {
+	Context("GET /app/:name", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/vendors/apache")
+			response := doGetRequest("/apps/AWS Fargate")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/vendors/apache")
+			response := doGetRequest("/apps/AWS Fargate")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
 
-		PContext("when name is not found", func() {
+		Context("when name is not found", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/vendors/non-existent")
+				response := doGetRequest("/apps/non-existent")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})
 		})
 	})
 
-	Context("GET /vendors/:name/resources", func() {
+	Context("GET /apps/:name/:appVersion/resources", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/vendors/apache/resources")
+			response := doGetRequest("/apps/AWS Fargate/1.0.0/resources")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/vendors/apache/resources")
+			response := doGetRequest("/apps/AWS Fargate/1.0.0/resources")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
 
-		PContext("when name is not found", func() {
+		Context("when name is not found", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/vendors/non-existent/resources")
+				response := doGetRequest("/apps/non-existent/resources")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})

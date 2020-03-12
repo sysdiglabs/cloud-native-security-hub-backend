@@ -96,8 +96,8 @@ func (h *handlerRepository) retrieveOneResourcesHandler(
 		params.ByName("kind"),
 		params.ByName("appVersion"))
 	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
+		writer.WriteHeader(404)
+		h.logRequest(request, 404)
 		writer.Write([]byte(err.Error()))
 		return
 	}
@@ -117,8 +117,8 @@ func (h *handlerRepository) retrieveOneResourceByVersionHandler(
 		params.ByName("appVersion"),
 		params.ByName("version"))
 	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
+		writer.WriteHeader(404)
+		h.logRequest(request, 404)
 		writer.Write([]byte(err.Error()))
 		return
 	}
@@ -134,8 +134,8 @@ func (h *handlerRepository) retrieveAllAppsHandler(
 	useCase := h.factory.NewRetrieveAllAppsUseCase()
 	apps, err := useCase.Execute()
 	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
+		writer.WriteHeader(404)
+		h.logRequest(request, 404)
 		writer.Write([]byte(err.Error()))
 		return
 	}
@@ -151,8 +151,8 @@ func (h *handlerRepository) retrieveOneAppHandler(
 	useCase := h.factory.NewRetrieveOneAppUseCase()
 	vendor, err := useCase.Execute(params.ByName("app"))
 	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
+		writer.WriteHeader(404)
+		h.logRequest(request, 404)
 		writer.Write([]byte(err.Error()))
 		return
 	}
@@ -168,8 +168,8 @@ func (h *handlerRepository) retrieveAllResourcesFromAppHandler(
 	useCase := h.factory.NewRetrieveAllResourcesFromAppUseCase()
 	resources, err := useCase.Execute(params.ByName("app"))
 	if err != nil {
-		writer.WriteHeader(500)
-		h.logRequest(request, 500)
+		writer.WriteHeader(404)
+		h.logRequest(request, 404)
 		writer.Write([]byte(err.Error()))
 		return
 	}
