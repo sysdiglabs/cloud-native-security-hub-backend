@@ -46,11 +46,11 @@ func (r *postgresRepository) Save(resource *Resource) error {
 				`UPDATE latest_resources 
 				 SET raw = $1 
 				 WHERE (raw->>'appVersion')::jsonb ? $4 
-				 AND raw @> jsonb_build_object('app', $2::text, 
+				 AND raw @> jsonb_build_object('appID', $2::text, 
 												'kind', $3::text)`,
 				resourceDTO,
-				resource.App,
-				resource.Kind,
+				resource.ID.appID,
+				resource.ID.kind,
 				resource.ID.appVersion)
 			transaction.Commit()
 		}
@@ -62,22 +62,22 @@ func (r *postgresRepository) Save(resource *Resource) error {
 		`UPDATE resources 
 		SET available_versions = $1 
 		WHERE (raw->>'appVersion')::jsonb ? $4 
-				AND raw @> jsonb_build_object('app', $2::text, 
+				AND raw @> jsonb_build_object('appID', $2::text, 
 										'kind', $3::text) `,
 		pq.Array(availableVersions),
-		resource.App,
-		resource.Kind,
+		resource.ID.appID,
+		resource.ID.kind,
 		resource.ID.appVersion)
 
 	_, err = r.db.Exec(
 		`UPDATE latest_resources 
 		SET available_versions = $1 
 		WHERE (raw->>'appVersion')::jsonb ? $4 
-			AND raw @> jsonb_build_object('app', $2::text, 
+			AND raw @> jsonb_build_object('appID', $2::text, 
 										'kind', $3::text) `,
 		pq.Array(availableVersions),
-		resource.App,
-		resource.Kind,
+		resource.ID.appID,
+		resource.ID.kind,
 		resource.ID.appVersion)
 
 	return err
@@ -89,10 +89,10 @@ func retrieveExistingVersion(transaction *sql.Tx, resource *Resource) string {
 		`SELECT raw ->> 'version' AS version 
 		FROM latest_resources 
 		WHERE (raw->>'appVersion')::jsonb ? $3 
-			AND raw @> jsonb_build_object('app', $1::text, 
+			AND raw @> jsonb_build_object('appID', $1::text, 
 										'kind', $2::text)`,
-		resource.App,
-		resource.Kind,
+		resource.ID.appID,
+		resource.ID.kind,
 		resource.ID.appVersion).Scan(&existent)
 
 	return existent
@@ -105,13 +105,13 @@ func (r *postgresRepository) retrieveAvailableVersions(id ResourceID) []string {
 			(SELECT raw ->> 'version' 
 			from resources 
 			WHERE (raw->>'appVersion')::jsonb ? $3 
-			AND raw @> jsonb_build_object('app', $1::text, 'kind', $2::text) 
+			AND raw @> jsonb_build_object('appID', $1::text, 'kind', $2::text) 
 			ORDER BY raw ->> 'version' DESC) 
 		FROM resources 
 		WHERE (raw->>'appVersion')::jsonb ? $3 
-		AND raw @> jsonb_build_object('app', $1::text, 'kind', $2::text) 
+		AND raw @> jsonb_build_object('appID', $1::text, 'kind', $2::text) 
 		LIMIT 1;`,
-		id.app,
+		id.appID,
 		id.kind,
 		id.appVersion).Scan(pq.Array(&availableVersions))
 
@@ -125,10 +125,10 @@ func (r *postgresRepository) FindById(id ResourceID) (*Resource, error) {
 		`SELECT available_versions, raw 
 		FROM latest_resources 
 		WHERE (raw->>'appVersion')::jsonb ? $1 
-				AND	raw @> jsonb_build_object('app', $2::text, 
+				AND	raw @> jsonb_build_object('appID', $2::text, 
 											  'kind', $3::text)`,
 		id.appVersion,
-		id.app,
+		id.appID,
 		id.kind).Scan(pq.Array(&availableVersions), &result)
 
 	if err == sql.ErrNoRows {
@@ -165,11 +165,11 @@ func (r *postgresRepository) FindByVersion(id ResourceID, version string) (*Reso
 		`SELECT available_versions, raw 
 		FROM resources 
 		WHERE 	(raw->>'appVersion')::jsonb ? $1 
-				AND raw @> jsonb_build_object(	'app', $2::text, 
+				AND raw @> jsonb_build_object(	'appID', $2::text, 
 												'kind', $3::text, 
 												'version', $4::text)`,
 		id.appVersion,
-		id.app,
+		id.appID,
 		id.kind,
 		version).Scan(pq.Array(&availableVersions), &result)
 	if err == sql.ErrNoRows {
@@ -187,11 +187,11 @@ func (r *postgresRepository) findByAppVersion(id ResourceID, appVersion, version
 		`SELECT available_versions, raw 
 		FROM latest_resources
 		WHERE 	(raw->>'appVersion')::jsonb ? $1 
-				AND raw @>jsonb_build_object('app', $2::text, 
+				AND raw @>jsonb_build_object('appID', $2::text, 
 											'kind', $3::text,
 											'version', $4::text)`,
 		appVersion,
-		id.app,
+		id.appID,
 		id.kind,
 		version).Scan(pq.Array(&availableVersions), &result)
 	if err == sql.ErrNoRows {

@@ -43,7 +43,7 @@ func (r *postgresRepository) Save(app *App) error {
 
 func (r *postgresRepository) FindById(id string) (*App, error) {
 	result := new(appForPostgres)
-	err := r.db.QueryRow(`SELECT raw FROM apps WHERE raw @> jsonb_build_object('name', $1::text)`, id).Scan(&result)
+	err := r.db.QueryRow(`SELECT raw FROM apps WHERE raw @> jsonb_build_object('id', $1::text)`, id).Scan(&result)
 
 	if err == sql.ErrNoRows {
 		return nil, ErrAppNotFound
