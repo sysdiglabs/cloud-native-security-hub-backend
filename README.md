@@ -13,6 +13,11 @@ https://promhub.io site
 This code requires a recent golang version (1.13) and it uses modules to handle
 the dependencies.
 
+You also can use the docker compose file using the command:
+```
+docker-compose up -d
+```
+
 ### Configuration
 
 This project requires a PostgreSQL 11 server running. And you configure the app

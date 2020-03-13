@@ -18,6 +18,7 @@ spec:
       containers:
       - name: backend
         image: gcr.io/mateo-burillo-ns/promhub-backend:latest
+        imagePullPolicy: Always
         env:
           - name: DATABASE_URL
             valueFrom:

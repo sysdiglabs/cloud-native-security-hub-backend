@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:11.7
+    restart: always
+    environment:
+      POSTGRES_DB: promhub
+      POSTGRES_USER: "promhub"
+      POSTGRES_PASSWORD: "pass"
+    ports:
+      - 5432:5432
+  dbimport:
+    container_name: dbimport
+    image: dbimport
+    restart: on-failure
+    environment:
+      DATABASE_URL: "postgres://promhub:pass@postgres/promhub?sslmode=disable"
+      RESOURCES_PATH: "/resources/resources"
+      APPS_PATH: "/resources/apps"
+    command:  ["/bin/sh", "-c", "sleep 10 && /bin/dbimport && touch /resources/file.unlock"]
+    volumes:
+      - resources:/resources
+    depends_on:
+      - postgres
+      - resources
+  resources:
+    container_name: resources
+    image: resources
+    command: ["/bin/sh", "-c", "cp -r /resources/* /shared-resources && /bin/sh /wait/wait.sh"]
+    volumes:
+      - resources:/shared-resources
+      - ./wait.sh:/wait/wait.sh
+  backend:
+    container_name: backend
+    image: gcr.io/mateo-burillo-ns/promhub-backend:latest
+    environment:
+      DATABASE_URL: "postgres://promhub:pass@postgres/promhub?sslmode=disable"
+    ports:
+      - 8080:8080
+volumes:
+  resources:
