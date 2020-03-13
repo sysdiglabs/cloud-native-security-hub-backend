@@ -56,7 +56,9 @@ URL: /resources/:kind/:app/:appVersion/:version
 RESPONSE: JSON with the specific 'version' of the 'kind' of resource for a specific 'version' of an 'app' 
 ```
 
-> In case of error or not resources or apps found, the API returns 404 error code. 
+Notes: 
+* The name of the app is passed in slug format (i.e. "AWS Fargate" will be passed as "aws-fargate").
+* In case of error or not resources or apps found, the API returns 404 error code. 
 
 
 ### cmd/dbimport

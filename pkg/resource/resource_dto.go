@@ -9,6 +9,7 @@ import (
 type ResourceDTO struct {
 	Kind              string           `json:"kind" yaml:"kind"`
 	App               string           `json:"app" yaml:"app"`
+	AppID             string           `json:"appID" yaml:"-"`
 	Version           string           `json:"version" yaml:"version"`
 	AvailableVersions []string         `json:"availableVersions" yaml:"-"`
 	AppVersion        []string         `json:"appVersion" yaml:"appVersion"`
@@ -25,6 +26,7 @@ func NewResourceDTO(entity *Resource) *ResourceDTO {
 	return &ResourceDTO{
 		Kind:              entity.Kind,
 		App:               entity.App,
+		AppID:             entity.ID.appID,
 		Version:           entity.Version,
 		AvailableVersions: entity.AvailableVersions,
 		AppVersion:        entity.AppVersion,

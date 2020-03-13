@@ -24,13 +24,13 @@ var _ = Describe("HTTP API for apps", func() {
 
 	Context("GET /app/:name", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/apps/AWS Fargate")
+			response := doGetRequest("/apps/aws-fargate")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/apps/AWS Fargate")
+			response := doGetRequest("/apps/aws-fargate")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
@@ -46,13 +46,13 @@ var _ = Describe("HTTP API for apps", func() {
 
 	Context("GET /apps/:name/:appVersion/resources", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/apps/AWS Fargate/1.0.0/resources")
+			response := doGetRequest("/apps/aws-fargate/1.0.0/resources")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/apps/AWS Fargate/1.0.0/resources")
+			response := doGetRequest("/apps/aws-fargate/1.0.0/resources")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
