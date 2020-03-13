@@ -22,22 +22,30 @@ var _ = Describe("HTTP API for resources", func() {
 		})
 	})
 
-	Context("GET /resources/:kind/:name", func() {
+	Context("GET /resources/:kind/:app/:appVersion", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/resources/falco-rules/apache")
+			response := doGetRequest("/resources/Description/AWS Fargate/1.0.0")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/resources/falco-rules/apache")
+			response := doGetRequest("/resources/Description/AWS Fargate/1.0.0")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
 
-		PContext("when name is not found", func() {
+		Context("when app is not found", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/resources/falco-rules/non-existent")
+				response := doGetRequest("/resources/Description/non-existent/1.0.0")
+
+				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
+			})
+		})
+
+		Context("when app version is not found", func() {
+			It("returns a NOTFOUND", func() {
+				response := doGetRequest("/resources/resources/Description/AWS Fargate/non-existent")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})
@@ -45,59 +53,37 @@ var _ = Describe("HTTP API for resources", func() {
 
 		Context("when kind does not exist", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/resources/foo/apache")
+				response := doGetRequest("/resources/non-existent/AWS Fargate/1.0.0")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})
 		})
 	})
 
-	Context("GET /resources/:kind/:name/custom-rules.yaml", func() {
+	Context("GET /resources/:kind/:app/:appVersion/:version", func() {
 		It("returns OK", func() {
-			response := doGetRequest("/resources/falco-rules/apache/custom-rules.yaml")
-
-			Expect(response.StatusCode).To(Equal(http.StatusOK))
-		})
-
-		It("returns an YAML response", func() {
-			response := doGetRequest("/resources/falco-rules/apache/custom-rules.yaml")
-
-			Expect(response.Header.Get("Content-Type"), "application/x-yaml")
-		})
-
-		PContext("when name is not found", func() {
-			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/resources/non-existent/custom-rules.yaml")
-
-				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
-			})
-		})
-
-		Context("when is not falco-rules", func() {
-			It("returns a BADREQUEST", func() {
-				response := doGetRequest("/resources/foo/apache/custom-rules.yaml")
-
-				Expect(response.StatusCode).To(Equal(http.StatusBadRequest))
-			})
-		})
-	})
-
-	Context("GET /resources/:kind/:name/version/:version", func() {
-		It("returns OK", func() {
-			response := doGetRequest("/resources/falco-rules/apache/version/1.0.0")
+			response := doGetRequest("/resources/Description/AWS Fargate/1.0.0/2.0.0")
 
 			Expect(response.StatusCode).To(Equal(http.StatusOK))
 		})
 
 		It("returns an JSON response", func() {
-			response := doGetRequest("/resources/falco-rules/apache")
+			response := doGetRequest("/resources/Description/AWS Fargate/1.0.0/2.0.0")
 
 			Expect(response.Header.Get("Content-Type"), "application/json")
 		})
 
-		PContext("when name is not found", func() {
+		Context("when app is not found", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/resources/falco-rules/non-existent/version/1.0.0")
+				response := doGetRequest("/resources/Description/non-existent/1.0.0/1.0.0")
+
+				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
+			})
+		})
+
+		Context("when app version is not found", func() {
+			It("returns a NOTFOUND", func() {
+				response := doGetRequest("/resources/Description/AWS Fargate/non-existent/1.0.0")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})
@@ -105,39 +91,17 @@ var _ = Describe("HTTP API for resources", func() {
 
 		Context("when kind does not exist", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/resources/foo/apache/version/1.0.0")
+				response := doGetRequest("/resources/non-existent/AWS Fargate/1.0.0/1.0.0")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})
 		})
-	})
 
-	Context("GET /resources/:kind/:name/version/:version/custom-rules.yaml", func() {
-		It("returns OK", func() {
-			response := doGetRequest("/resources/falco-rules/apache/version/1.0.0/custom-rules.yaml")
-
-			Expect(response.StatusCode).To(Equal(http.StatusOK))
-		})
-
-		It("returns an YAML response", func() {
-			response := doGetRequest("/resources/falco-rules/apache/version/1.0.0/custom-rules.yaml")
-
-			Expect(response.Header.Get("Content-Type"), "application/x-yaml")
-		})
-
-		PContext("when name is not found", func() {
+		Context("when resource version does not exist", func() {
 			It("returns a NOTFOUND", func() {
-				response := doGetRequest("/resources/falco-rules/apache/version/4.0.0/custom-rules.yaml")
+				response := doGetRequest("/resources/Description/AWS Fargate/1.0.0/5.0.0")
 
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
-			})
-		})
-
-		Context("when is not falco-rules", func() {
-			It("returns a BADREQUEST", func() {
-				response := doGetRequest("/resources/foo/apache/version/1.0.0/custom-rules.yaml")
-
-				Expect(response.StatusCode).To(Equal(http.StatusBadRequest))
 			})
 		})
 	})

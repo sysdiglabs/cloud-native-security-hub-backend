@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: securityhub
+  namespace: promhub
   labels:
     app: backend
 spec:
-  replicas: 6
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -17,13 +17,13 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/mateo-burillo-ns/securityhub-backend:latest
+        image: gcr.io/mateo-burillo-ns/promhub-backend:latest
         env:
           - name: DATABASE_URL
             valueFrom:
               secretKeyRef:
-                name: securityhub
-                key: database_url
+                name: promhub
+                key: database-url
         ports:
         - containerPort: 8080
         readinessProbe:

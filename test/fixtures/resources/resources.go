@@ -1,104 +1,57 @@
 package resources
 
 import (
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
 )
 
-func Apache() *resource.Resource {
-	result := ApacheWithoutAvailableVersions()
+func AwsFargateDescription() *resource.Resource {
+	result := AwsFargateDescriptionWithoutAvailableVersions()
 	result.AvailableVersions = []string{"1.0.0"}
 
 	return result
 }
 
-func ApacheWithoutAvailableVersions() *resource.Resource {
+func AwsFargateDescriptionWithoutAvailableVersions() *resource.Resource {
 	return &resource.Resource{
-		ID:          resource.NewResourceID("apache", resource.FalcoRules),
-		Vendor:      "Apache",
-		Name:        "Apache",
-		Version:     "1.0.0",
-		Description: "# Apache Falco Rules\n",
-		Keywords:    []string{"web"},
-		Icon:        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Apache_HTTP_server_logo_%282016%29.svg/300px-Apache_HTTP_server_logo_%282016%29.svg.png",
+		ID: resource.NewResourceID("AWS Fargate",
+			"Description",
+			[]string{"1.0.0", "1.0.1"}),
+		Kind:       "Description",
+		App:        "AWS Fargate",
+		Version:    "1.0.0",
+		AppVersion: []string{"1.0.0", "1.0.1"},
 		Maintainers: []*resource.Maintainer{
 			{
-				Name: "nestorsalceda",
-				Link: "github.com/nestorsalceda",
-			},
-			{
-				Name: "fedebarcelona",
-				Link: "github.com/tembleking",
+				Name: "sysdiglabs",
+				Link: "github.com/sysdiglabs",
 			},
 		},
-		Rules: []*resource.FalcoRuleData{
-			{
-				Raw: "- macro: apache_consider_syscalls\n  condition: (evt.num < 0)\n",
-			},
-		},
+		Data: "# AWS Fargate\nDescription.",
 	}
 }
 
-func MongoDB() *resource.Resource {
-	result := MongoDBWithoutAvailableVersions()
+func AwsFargateAlerts() *resource.Resource {
+	result := AwsFargateAlertsWithoutAvailableVersions()
 	result.AvailableVersions = []string{"1.0.0"}
 
 	return result
 }
 
-func MongoDBWithoutAvailableVersions() *resource.Resource {
+func AwsFargateAlertsWithoutAvailableVersions() *resource.Resource {
 	return &resource.Resource{
-		Vendor:      "Mongo",
-		ID:          resource.NewResourceID("mongodb", resource.FalcoRules),
-		Name:        "MongoDB",
-		Version:     "1.0.0",
-		Description: "# MongoDB Falco Rules\n",
-		Keywords:    []string{"database"},
-		Icon:        "https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/2560px-MongoDB-Logo.svg.png",
+		ID: resource.NewResourceID("AWS Fargate",
+			"Alerts",
+			[]string{"1.0.0"}),
+		Kind:       "Alerts",
+		App:        "AWS Fargate",
+		Version:    "1.0.0",
+		AppVersion: []string{"1.0.0", "1.0.1"},
 		Maintainers: []*resource.Maintainer{
 			{
-				Name: "nestorsalceda",
-				Link: "github.com/nestorsalceda",
-			},
-			{
-				Name: "fedebarcelona",
-				Link: "github.com/tembleking",
+				Name: "sysdiglabs",
+				Link: "github.com/sysdiglabs",
 			},
 		},
-		Rules: []*resource.FalcoRuleData{
-			{
-				Raw: "- macro: mongo_consider_syscalls\n  condition: (evt.num < 0)\n",
-			},
-		},
+		Data: "# AWS Fargate\nAlerts.",
 	}
-}
-
-func TrustedRegistriesImagesWithoutAvailableVersions() *resource.Resource {
-	return &resource.Resource{
-		Vendor:           "Kubernetes",
-		ID:               resource.NewResourceID("Kubernetes Trusted Registry Images", resource.OpenPolicyAgentPolicies),
-		Name:             "Kubernetes Trusted Registry Images",
-		ShortDescription: "Ensure all images running in the Kubernetes cluster comes from a trusted registry",
-		Version:          "0.1.0",
-		Description:      "# Kubernetes Trusted Registry Images\n",
-		Keywords:         []string{"kubernetes"},
-		Icon:             "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Kubernetes_logo_without_workmark.svg/300px-Kubernetes_logo_without_workmark.svg.png",
-		Maintainers: []*resource.Maintainer{
-			{
-				Name: "Néstor Salceda",
-				Link: "https://github.com/nestorsalceda",
-			},
-		},
-		Policies: []*resource.OpenPolicyAgentPolicyData{
-			{
-				Raw: "package kubernetes.admission\n\ndeny[msg] {}\n",
-			},
-		},
-	}
-}
-
-func TrustedRegistriesImages() *resource.Resource {
-	result := TrustedRegistriesImagesWithoutAvailableVersions()
-	result.AvailableVersions = []string{"0.1.0"}
-
-	return result
 }

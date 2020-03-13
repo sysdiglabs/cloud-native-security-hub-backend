@@ -7,41 +7,48 @@ import (
 	. "github.com/onsi/gomega"
 
 	"database/sql"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"path/filepath"
 
-	"github.com/falcosecurity/cloud-native-security-hub/web"
+	"github.com/sysdiglabs/prometheus-hub/pkg/app"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/prometheus-hub/web"
 )
 
 func TestWeb(t *testing.T) {
-	loadDatabaseFixture()
+	loadDatabaseData()
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Web Suite")
 }
 
-func loadDatabaseFixture() {
+func loadDatabaseData() {
+	var appRepository app.Repository
+	var resourceRepository resource.Repository
+
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = db.Exec(`TRUNCATE TABLE latest_security_resources;
+	db.Exec(`TRUNCATE TABLE latest_security_resources;
 					  TRUNCATE TABLE security_resources;
-					  TRUNCATE TABLE vendors;
-					  TRUNCATE TABLE schema_migrations`)
-	if err != nil {
-		log.Fatal(err)
-	}
+					  TRUNCATE TABLE apps;`)
 
-	path := filepath.Join("testdata", "fixture.sql") // relative path
-	data, err := ioutil.ReadFile(path)
-	_, err = db.Exec(string(data))
-	if err != nil {
-		log.Fatal(err)
-	}
+	appRepository = app.NewPostgresRepository(db)
+	appRepository.Save(apps.AwsFargate())
+	appRepository.Save(apps.AwsLambda())
+
+	resourceRepository = resource.NewPostgresRepository(db)
+
+	fargateDescription := resources.AwsFargateDescription()
+	resourceRepository.Save(fargateDescription)
+	fargateDescription.Version = "2.0.0"
+	resourceRepository.Save(fargateDescription)
+	resourceRepository.Save(resources.AwsFargateAlerts())
+
 }
 
 func doGetRequest(path string) *http.Response {

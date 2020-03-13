@@ -1,30 +1,15 @@
 package resource
 
-import (
-	"github.com/gosimple/slug"
-)
-
-const (
-	FalcoRules              = "FalcoRules"
-	OpenPolicyAgentPolicies = "OpenPolicyAgentPolicies"
-)
-
 type ResourceID struct {
-	slug string
-	kind string
+	kind       string
+	app        string
+	appVersion string
 }
 
-func NewResourceID(name, kind string) ResourceID {
+func NewResourceID(app, kind string, appVersion []string) ResourceID {
 	return ResourceID{
-		slug: slug.Make(name),
-		kind: kind,
+		kind:       kind,
+		app:        app,
+		appVersion: appVersion[0],
 	}
-}
-
-func (r *ResourceID) Slug() string {
-	return r.slug
-}
-
-func (r *ResourceID) Kind() string {
-	return r.kind
 }

@@ -1,7 +1,7 @@
 package usecases
 
 import (
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
 )
 
 type RetrieveAllResources struct {

@@ -4,10 +4,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/falcosecurity/cloud-native-security-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/usecases"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
 )
 
 var _ = Describe("RetrieveOneResource use case", func() {
@@ -20,14 +20,14 @@ var _ = Describe("RetrieveOneResource use case", func() {
 	})
 
 	It("returns one resource", func() {
-		result, _ := useCase.Execute("apache", resource.FalcoRules)
+		result, _ := useCase.Execute("AWS Fargate", "Description", "1.0.0")
 
-		Expect(result).To(Equal(resources.Apache()))
+		Expect(result).To(Equal(resources.AwsFargateDescription()))
 	})
 
 	Context("when resource does not exist", func() {
 		It("returns resource not found error", func() {
-			retrieved, err := useCase.Execute("notFound", resource.FalcoRules)
+			retrieved, err := useCase.Execute("notFound", "Description", "1.0.0")
 
 			Expect(retrieved).To(BeNil())
 			Expect(err).To(MatchError(resource.ErrResourceNotFound))

@@ -12,5 +12,6 @@ type Repository interface {
 }
 
 var (
-	ErrResourceNotFound = errors.New("no resource was found")
+	ErrResourceNotFound                 = errors.New("no resource was found")
+	ErrResourceWithAppVersionDuplicated = errors.New("the app version of this resource already exist")
 )

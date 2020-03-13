@@ -5,36 +5,36 @@ import (
 	"log"
 	"os"
 
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/vendor"
+	"github.com/sysdiglabs/prometheus-hub/pkg/app"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
 )
 
 type Factory interface {
 	NewRetrieveAllResourcesUseCase() *RetrieveAllResources
 	NewRetrieveOneResourceUseCase() *RetrieveOneResource
 	NewRetrieveOneResourceByVersionUseCase() *RetrieveOneResourceByVersion
-	NewRetrieveFalcoRulesForHelmChartUseCase() *RetrieveFalcoRulesForHelmChart
-	NewRetrieveFalcoRulesForHelmChartByVersionUseCase() *RetrieveFalcoRulesForHelmChartByVersion
-	NewRetrieveAllVendorsUseCase() *RetrieveAllVendors
-	NewRetrieveOneVendorUseCase() *RetrieveOneVendor
-	NewRetrieveAllResourcesFromVendorUseCase() *RetrieveAllResourcesFromVendor
+
+	NewRetrieveAllAppsUseCase() *RetrieveAllApps
+
+	NewRetrieveOneAppUseCase() *RetrieveOneApp
+	NewRetrieveAllResourcesFromAppUseCase() *RetrieveAllResourcesFromApp
 
 	NewResourcesRepository() resource.Repository
-	NewVendorRepository() vendor.Repository
+	NewAppRepository() app.Repository
 }
 
 func NewFactory() Factory {
 	factory := &factory{}
 	factory.db = factory.newDB()
 	factory.resourceRepository = factory.NewResourcesRepository()
-	factory.vendorRepository = factory.NewVendorRepository()
+	factory.appRepository = factory.NewAppRepository()
 	return factory
 }
 
 // TODO: Instantiate useCases only once
 type factory struct {
 	db                 *sql.DB
-	vendorRepository   vendor.Repository
+	appRepository      app.Repository
 	resourceRepository resource.Repository
 }
 
@@ -50,27 +50,19 @@ func (f *factory) NewRetrieveOneResourceByVersionUseCase() *RetrieveOneResourceB
 	return &RetrieveOneResourceByVersion{ResourceRepository: f.resourceRepository}
 }
 
-func (f *factory) NewRetrieveFalcoRulesForHelmChartUseCase() *RetrieveFalcoRulesForHelmChart {
-	return &RetrieveFalcoRulesForHelmChart{ResourceRepository: f.resourceRepository}
-}
-
-func (f *factory) NewRetrieveFalcoRulesForHelmChartByVersionUseCase() *RetrieveFalcoRulesForHelmChartByVersion {
-	return &RetrieveFalcoRulesForHelmChartByVersion{ResourceRepository: f.resourceRepository}
-}
-
-func (f *factory) NewRetrieveAllVendorsUseCase() *RetrieveAllVendors {
-	return &RetrieveAllVendors{
-		VendorRepository: f.vendorRepository,
+func (f *factory) NewRetrieveAllAppsUseCase() *RetrieveAllApps {
+	return &RetrieveAllApps{
+		AppRepository: f.appRepository,
 	}
 }
 
-func (f *factory) NewRetrieveOneVendorUseCase() *RetrieveOneVendor {
-	return &RetrieveOneVendor{VendorRepository: f.vendorRepository}
+func (f *factory) NewRetrieveOneAppUseCase() *RetrieveOneApp {
+	return &RetrieveOneApp{AppRepository: f.appRepository}
 }
 
-func (f *factory) NewRetrieveAllResourcesFromVendorUseCase() *RetrieveAllResourcesFromVendor {
-	return &RetrieveAllResourcesFromVendor{
-		VendorRepository:   f.vendorRepository,
+func (f *factory) NewRetrieveAllResourcesFromAppUseCase() *RetrieveAllResourcesFromApp {
+	return &RetrieveAllResourcesFromApp{
+		AppRepository:      f.appRepository,
 		ResourceRepository: f.resourceRepository,
 	}
 }
@@ -79,8 +71,8 @@ func (f *factory) NewResourcesRepository() resource.Repository {
 	return resource.NewPostgresRepository(f.db)
 }
 
-func (f *factory) NewVendorRepository() vendor.Repository {
-	return vendor.NewPostgresRepository(f.db)
+func (f *factory) NewAppRepository() app.Repository {
+	return app.NewPostgresRepository(f.db)
 }
 
 func (f *factory) newDB() *sql.DB {

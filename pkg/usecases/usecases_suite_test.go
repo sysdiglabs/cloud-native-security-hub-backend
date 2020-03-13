@@ -5,12 +5,10 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	"github.com/falcosecurity/cloud-native-security-hub/test/fixtures/resources"
-	"github.com/falcosecurity/cloud-native-security-hub/test/fixtures/vendors"
-
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/resource"
-	"github.com/falcosecurity/cloud-native-security-hub/pkg/vendor"
+	"github.com/sysdiglabs/prometheus-hub/pkg/app"
+	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
+	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
 )
 
 func TestUsecases(t *testing.T) {
@@ -20,12 +18,12 @@ func TestUsecases(t *testing.T) {
 
 func NewResourceRepository() resource.Repository {
 	return resource.NewMemoryRepository(
-		[]*resource.Resource{resources.Apache(), resources.MongoDB()},
+		[]*resource.Resource{resources.AwsFargateDescription(), resources.AwsFargateAlerts()},
 	)
 }
 
-func NewVendorRepository() vendor.Repository {
-	return vendor.NewMemoryRepository(
-		[]*vendor.Vendor{vendors.Apache(), vendors.Mongo()},
+func NewAppRepository() app.Repository {
+	return app.NewMemoryRepository(
+		[]*app.App{apps.AwsFargate()},
 	)
 }
