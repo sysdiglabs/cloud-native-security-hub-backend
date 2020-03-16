@@ -13,7 +13,7 @@ services:
       - 5432:5432
   dbimport:
     container_name: dbimport
-    image: dbimport
+    image: gcr.io/mateo-burillo-ns/promhub-dbimport:latest
     restart: on-failure
     environment:
       DATABASE_URL: "postgres://promhub:pass@postgres/promhub?sslmode=disable"
@@ -27,7 +27,7 @@ services:
       - resources
   resources:
     container_name: resources
-    image: resources
+    image: gcr.io/mateo-burillo-ns/promhub-resources:latest
     command: ["/bin/sh", "-c", "cp -r /resources/* /shared-resources && /bin/sh /wait/wait.sh"]
     volumes:
       - resources:/shared-resources
