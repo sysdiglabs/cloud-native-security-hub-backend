@@ -49,13 +49,14 @@ spec:
                 key: database-url
           - name: RESOURCES_PATH
             value: /resources/resources
-          - name: VENDOR_PATH
-            value: /resources/vendors
+          - name: APPS_PATH
+            value: /resources/apps
         volumeMounts:
           - name: resources
             mountPath: /resources
       - name: resources
         image: gcr.io/mateo-burillo-ns/promhub-resources:latest
+        imagePullPolicy: Always
         command: ["/bin/sh", "-c", "cp -r /resources/* /shared-resources && /bin/sh /wait/wait.sh"]
         volumeMounts:
           - name: resources
