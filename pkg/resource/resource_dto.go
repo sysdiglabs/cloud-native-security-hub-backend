@@ -15,11 +15,26 @@ type ResourceDTO struct {
 	AppVersion        []string         `json:"appVersion" yaml:"appVersion"`
 	Maintainers       []*MaintainerDTO `json:"maintainers" yaml:"maintainers"`
 	Data              string           `json:"data" yaml:"data"`
+	Dashboards        []*DashboardDTO  `json:"dashboards" yaml:"dashboards"`
+	Alerts            AlertsDTO        `json:"alerts" yaml:"alerts"`
 }
 
 type MaintainerDTO struct {
 	Name string `json:"name" yaml:"name"`
 	Link string `json:"link" yaml:"link"`
+}
+
+type AlertsDTO struct {
+	PrometheusAlerts string `json:"prometheusAlerts" yaml:"prometheusAlerts"`
+	SysdigAlerts     string `json:"sysdigAlerts" yaml:"sysdigAlerts"`
+}
+
+type DashboardDTO struct {
+	Name        string `json:"name" yaml:"name"`
+	Kind        string `json:"kind" yaml:"kind"`
+	Image       string `json:"image" yaml:"image"`
+	Description string `json:"description" yaml:"description"`
+	Data        string `json:"data" yaml:"data"`
 }
 
 func NewResourceDTO(entity *Resource) *ResourceDTO {
@@ -32,6 +47,8 @@ func NewResourceDTO(entity *Resource) *ResourceDTO {
 		AppVersion:        entity.AppVersion,
 		Maintainers:       parseMaintainers(entity.Maintainers),
 		Data:              entity.Data,
+		Dashboards:        parseDashboards(entity.Dashboards),
+		Alerts:            parseAlerts(entity.Alerts),
 	}
 }
 
@@ -48,6 +65,29 @@ func parseMaintainers(maintainers []*Maintainer) []*MaintainerDTO {
 	return result
 }
 
+func parseDashboards(dashboards []*Dashboard) []*DashboardDTO {
+	var result []*DashboardDTO
+
+	for _, dashboard := range dashboards {
+		result = append(result, &DashboardDTO{
+			Name:        dashboard.Name,
+			Kind:        dashboard.Kind,
+			Image:       dashboard.Image,
+			Description: dashboard.Description,
+			Data:        dashboard.Data,
+		})
+	}
+
+	return result
+}
+
+func parseAlerts(alerts Alerts) AlertsDTO {
+	return AlertsDTO{
+		PrometheusAlerts: alerts.PrometheusAlerts,
+		SysdigAlerts:     alerts.SysdigAlerts,
+	}
+}
+
 func (r *ResourceDTO) ToEntity() *Resource {
 	return &Resource{
 		ID: NewResourceID(r.App,
@@ -60,6 +100,8 @@ func (r *ResourceDTO) ToEntity() *Resource {
 		AppVersion:        r.AppVersion,
 		Maintainers:       toEntityMaintainers(r.Maintainers),
 		Data:              r.Data,
+		Dashboards:        toEntityDashboards(r.Dashboards),
+		Alerts:            toEntityAlerts(r.Alerts),
 	}
 }
 
@@ -74,6 +116,29 @@ func toEntityMaintainers(maintainers []*MaintainerDTO) []*Maintainer {
 	}
 
 	return result
+}
+
+func toEntityDashboards(dashboards []*DashboardDTO) []*Dashboard {
+	var result []*Dashboard
+
+	for _, dashboard := range dashboards {
+		result = append(result, &Dashboard{
+			Name:        dashboard.Name,
+			Kind:        dashboard.Kind,
+			Image:       dashboard.Image,
+			Description: dashboard.Description,
+			Data:        dashboard.Data,
+		})
+	}
+
+	return result
+}
+
+func toEntityAlerts(alerts AlertsDTO) Alerts {
+	return Alerts{
+		PrometheusAlerts: alerts.PrometheusAlerts,
+		SysdigAlerts:     alerts.SysdigAlerts,
+	}
 }
 
 func (r ResourceDTO) Value() (driver.Value, error) {

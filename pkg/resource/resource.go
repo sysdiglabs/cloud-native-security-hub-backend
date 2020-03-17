@@ -9,9 +9,24 @@ type Resource struct {
 	AppVersion        []string
 	Maintainers       []*Maintainer
 	Data              string
+	Dashboards        []*Dashboard
+	Alerts            Alerts
 }
 
 type Maintainer struct {
 	Name string
 	Link string
+}
+
+type Alerts struct {
+	PrometheusAlerts string
+	SysdigAlerts     string
+}
+
+type Dashboard struct {
+	Name        string
+	Kind        string
+	Image       string
+	Description string
+	Data        string
 }
