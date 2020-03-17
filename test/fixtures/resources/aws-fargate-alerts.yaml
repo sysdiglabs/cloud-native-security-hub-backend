@@ -9,6 +9,7 @@ appVersion:
 maintainers:
    - name: sysdiglabs
      link: github.com/sysdiglabs
-data: |
-   # AWS Fargate
-   Alerts.
+description: "Description of the alerts"
+Alerts: 
+   prometheusAlerts: "Prometheus Alert"
+   sysdigAlerts: "Sysdig Alert"
