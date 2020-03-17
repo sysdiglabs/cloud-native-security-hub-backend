@@ -40,7 +40,7 @@ spec:
       - name: dbimport
         image: gcr.io/mateo-burillo-ns/promhub-dbimport:0.0.3
         imagePullPolicy: Always
-        command: ["/bin/sh", "-c", "sleep 10 && /bin/dbimport && tou.1ch /resources/file.unlock"]
+        command: ["/bin/sh", "-c", "sleep 10 && /bin/dbimport && touch /resources/file.unlock"]
         env:
           - name: DATABASE_URL
             valueFrom:
