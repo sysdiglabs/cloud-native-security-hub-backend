@@ -5,7 +5,7 @@ metadata:
   namespace: promhub
 spec:
   domains:
-    - api.promhub.io
+    - api.promcat.io
 ---
 apiVersion: networking.gke.io/v1beta1
 kind: ManagedCertificate
@@ -14,7 +14,7 @@ metadata:
   namespace: promhub
 spec:
   domains:
-    - promhub.io
+    - promcat.io
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
