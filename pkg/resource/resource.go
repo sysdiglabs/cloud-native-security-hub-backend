@@ -8,9 +8,10 @@ type Resource struct {
 	AvailableVersions []string
 	AppVersion        []string
 	Maintainers       []*Maintainer
+	Description       string
 	Data              string
 	Dashboards        []*Dashboard
-	Alerts            Alerts
+	Alerts            *Alerts
 }
 
 type Maintainer struct {

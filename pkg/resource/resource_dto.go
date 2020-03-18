@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+	"log"
 )
 
 type ResourceDTO struct {
@@ -14,9 +15,10 @@ type ResourceDTO struct {
 	AvailableVersions []string         `json:"availableVersions" yaml:"-"`
 	AppVersion        []string         `json:"appVersion" yaml:"appVersion"`
 	Maintainers       []*MaintainerDTO `json:"maintainers" yaml:"maintainers"`
-	Data              string           `json:"data" yaml:"data"`
-	Dashboards        []*DashboardDTO  `json:"dashboards" yaml:"dashboards"`
-	Alerts            AlertsDTO        `json:"alerts" yaml:"alerts"`
+	Description       string           `json:"description,omitempty" yaml:"description"`
+	Data              string           `json:"data,omitempty" yaml:"data"`
+	Dashboards        []*DashboardDTO  `json:"dashboards,omitempty" yaml:"dashboards"`
+	Alerts            *AlertsDTO       `json:"alerts,omitempty" yaml:"alerts"`
 }
 
 type MaintainerDTO struct {
@@ -25,8 +27,8 @@ type MaintainerDTO struct {
 }
 
 type AlertsDTO struct {
-	PrometheusAlerts string `json:"prometheusAlerts" yaml:"prometheusAlerts"`
-	SysdigAlerts     string `json:"sysdigAlerts" yaml:"sysdigAlerts"`
+	PrometheusAlerts string `json:"prometheusAlerts,omitempty" yaml:"prometheusAlerts"`
+	SysdigAlerts     string `json:"sysdigAlerts,omitempty" yaml:"sysdigAlerts"`
 }
 
 type DashboardDTO struct {
@@ -38,7 +40,7 @@ type DashboardDTO struct {
 }
 
 func NewResourceDTO(entity *Resource) *ResourceDTO {
-	return &ResourceDTO{
+	resource := ResourceDTO{
 		Kind:              entity.Kind,
 		App:               entity.App,
 		AppID:             entity.ID.appID,
@@ -46,10 +48,24 @@ func NewResourceDTO(entity *Resource) *ResourceDTO {
 		AvailableVersions: entity.AvailableVersions,
 		AppVersion:        entity.AppVersion,
 		Maintainers:       parseMaintainers(entity.Maintainers),
+		Description:       entity.Description,
 		Data:              entity.Data,
 		Dashboards:        parseDashboards(entity.Dashboards),
-		Alerts:            parseAlerts(entity.Alerts),
 	}
+
+	if entity.Kind == "Alerts" {
+		if entity.Alerts == nil {
+			log.Printf("Warning: Resource of kind 'Alerts' without field Alerts. App: %s", string(entity.App))
+			resource.Alerts = &AlertsDTO{
+				PrometheusAlerts: "",
+				SysdigAlerts:     "",
+			}
+		} else {
+			resource.Alerts = parseAlerts(*entity.Alerts)
+		}
+	}
+
+	return &resource
 }
 
 func parseMaintainers(maintainers []*Maintainer) []*MaintainerDTO {
@@ -81,15 +97,15 @@ func parseDashboards(dashboards []*Dashboard) []*DashboardDTO {
 	return result
 }
 
-func parseAlerts(alerts Alerts) AlertsDTO {
-	return AlertsDTO{
+func parseAlerts(alerts Alerts) *AlertsDTO {
+	return &AlertsDTO{
 		PrometheusAlerts: alerts.PrometheusAlerts,
 		SysdigAlerts:     alerts.SysdigAlerts,
 	}
 }
 
 func (r *ResourceDTO) ToEntity() *Resource {
-	return &Resource{
+	resource := Resource{
 		ID: NewResourceID(r.App,
 			r.Kind,
 			r.AppVersion),
@@ -99,10 +115,27 @@ func (r *ResourceDTO) ToEntity() *Resource {
 		AvailableVersions: r.AvailableVersions,
 		AppVersion:        r.AppVersion,
 		Maintainers:       toEntityMaintainers(r.Maintainers),
+		Description:       r.Description,
 		Data:              r.Data,
 		Dashboards:        toEntityDashboards(r.Dashboards),
-		Alerts:            toEntityAlerts(r.Alerts),
 	}
+
+	if r.Kind == "Alerts" {
+		if r.Alerts == nil {
+			log.Printf("Resource of kind 'Alerts' without field Alerts. AppID: %s", string(r.AppID))
+			resource.Alerts = &Alerts{
+				PrometheusAlerts: "",
+				SysdigAlerts:     "",
+			}
+		} else {
+			resource.Alerts = toEntityAlerts(*r.Alerts)
+		}
+	} else {
+		resource.Alerts = nil
+	}
+
+	return &resource
+
 }
 
 func toEntityMaintainers(maintainers []*MaintainerDTO) []*Maintainer {
@@ -134,8 +167,8 @@ func toEntityDashboards(dashboards []*DashboardDTO) []*Dashboard {
 	return result
 }
 
-func toEntityAlerts(alerts AlertsDTO) Alerts {
-	return Alerts{
+func toEntityAlerts(alerts AlertsDTO) *Alerts {
+	return &Alerts{
 		PrometheusAlerts: alerts.PrometheusAlerts,
 		SysdigAlerts:     alerts.SysdigAlerts,
 	}

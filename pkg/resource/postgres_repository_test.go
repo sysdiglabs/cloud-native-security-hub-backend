@@ -45,12 +45,14 @@ var _ = Describe("Postgres Resource Repository", func() {
 	It("retrieves all existent resources", func() {
 		repository.Save(resources.AwsFargateDescription())
 		repository.Save(resources.AwsFargateAlerts())
+		repository.Save(resources.AwsFargateDashboards())
 
 		retrieved, _ := repository.FindAll()
 
 		Expect(retrieved).To(Equal([]*resource.Resource{
 			resources.AwsFargateDescription(),
-			resources.AwsFargateAlerts()}))
+			resources.AwsFargateAlerts(),
+			resources.AwsFargateDashboards()}))
 	})
 
 	Context("when querying by id", func() {

@@ -52,6 +52,52 @@ func AwsFargateAlertsWithoutAvailableVersions() *resource.Resource {
 				Link: "github.com/sysdiglabs",
 			},
 		},
-		Data: "# AWS Fargate\nAlerts.",
+		Description: "Description of the alerts",
+		Alerts: &resource.Alerts{
+			PrometheusAlerts: "Prometheus Alert",
+			SysdigAlerts:     "Sysdig Alert",
+		},
+	}
+}
+
+func AwsFargateDashboards() *resource.Resource {
+	result := AwsFargateDashboardsWithoutAvailableVersions()
+	result.AvailableVersions = []string{"1.0.0"}
+
+	return result
+}
+
+func AwsFargateDashboardsWithoutAvailableVersions() *resource.Resource {
+	return &resource.Resource{
+		ID: resource.NewResourceID("AWS Fargate",
+			"Dashboards",
+			[]string{"1.0.0"}),
+		Kind:       "Dashboards",
+		App:        "AWS Fargate",
+		Version:    "1.0.0",
+		AppVersion: []string{"1.0.0", "1.0.1"},
+		Maintainers: []*resource.Maintainer{
+			{
+				Name: "sysdiglabs",
+				Link: "github.com/sysdiglabs",
+			},
+		},
+		Description: "Description of the alerts",
+		Dashboards: []*resource.Dashboard{
+			{
+				Name:        "Grafana Dashboard",
+				Kind:        "Grafana",
+				Image:       "url-of-grafana-image.png",
+				Description: "Description of the Grafana dashboard",
+				Data:        "{}",
+			},
+			{
+				Name:        "Sysdig Dashboard",
+				Kind:        "Sysdig",
+				Image:       "url-of-sysdig-image.png",
+				Description: "Description of the Sysdig dashboard",
+				Data:        "{}",
+			},
+		},
 	}
 }
