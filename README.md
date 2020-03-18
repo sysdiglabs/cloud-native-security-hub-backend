@@ -1,12 +1,12 @@
-# Prometheus Hub
+# Prometheus Catalog
 
 ![last commit](https://flat.badgen.net/github/last-commit/sysdiglabs/prometheus-hub-backend?icon=github) ![licence](https://flat.badgen.net/github/license/sysdiglabs/prometheus-hub-backend)
 
-Prometheus Hub is a platform for discovering and sharing rules and 
+Prometheus Catalog is a platform for discovering and sharing rules and 
 configurations for monitoring cloud native applications.
 
 This repository contains the HTTP API and backend code that runs the
-https://promhub.io site
+https://promcat.io site
 
 ## Usage
 
@@ -69,7 +69,7 @@ data in the database:
 * `RESOURCES_PATH`: Path to prometheus-hub-resources/resources directory
 * `APPS_PATH`: Path to prometheus-hub-resources/apps directory
 
-These directories can be found in the [Prometheus Hub Resources repository](https://github.com/sysdiglabs/prometheus-hub-resources).
+These directories can be found in the [Prometheus Catalog Resources repository](https://github.com/sysdiglabs/prometheus-hub-resources).
 
 Then with the `DATABASE_URL` set, execute:
 

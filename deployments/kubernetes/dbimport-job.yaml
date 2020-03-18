@@ -38,7 +38,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: dbimport
-        image: gcr.io/mateo-burillo-ns/promhub-dbimport:0.0.3
+        image: gcr.io/mateo-burillo-ns/promhub-dbimport:latest
         imagePullPolicy: Always
         command: ["/bin/sh", "-c", "sleep 10 && /bin/dbimport && touch /resources/file.unlock"]
         env:
@@ -55,7 +55,7 @@ spec:
           - name: resources
             mountPath: /resources
       - name: resources
-        image: gcr.io/mateo-burillo-ns/promhub-resources:0.0.3
+        image: gcr.io/mateo-burillo-ns/promhub-resources:latest
         imagePullPolicy: Always
         command: ["/bin/sh", "-c", "cp -r /resources/* /shared-resources && /bin/sh /wait/wait.sh"]
         volumeMounts:
