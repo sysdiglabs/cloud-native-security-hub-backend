@@ -12,6 +12,7 @@ type postgresRepository struct {
 	db *sql.DB
 }
 
+// NewPostgresRepository Creates a postgresRepository with a db connection
 func NewPostgresRepository(db *sql.DB) Repository {
 	return &postgresRepository{db: db}
 }
@@ -25,10 +26,10 @@ func (r *postgresRepository) Save(resource *Resource) error {
 	existBefore, err := r.existAnyAppVersion(resource.ID, resource.AppVersion, resource.Version)
 	if err != nil {
 		return err
-	} else {
-		if existBefore == true {
-			return ErrResourceWithAppVersionDuplicated
-		}
+	}
+
+	if existBefore == true {
+		return ErrResourceWithAppVersionDuplicated
 	}
 
 	_, err = transaction.Exec("INSERT INTO resources(raw) VALUES($1)", resourceDTO)
@@ -118,6 +119,8 @@ func (r *postgresRepository) retrieveAvailableVersions(id ResourceID) []string {
 	return availableVersions
 }
 
+// FindById Implements the method of the Repository interface
+// Returns the resource matching the ResourceID
 func (r *postgresRepository) FindById(id ResourceID) (*Resource, error) {
 	result := new(ResourceDTO)
 	availableVersions := []string{}
@@ -140,6 +143,8 @@ func (r *postgresRepository) FindById(id ResourceID) (*Resource, error) {
 	return result.ToEntity(), err
 }
 
+// FindAll Implements the method of the Repository interface
+// Returns all the resources
 func (r *postgresRepository) FindAll() ([]*Resource, error) {
 	rows, err := r.db.Query(`SELECT available_versions, raw FROM latest_resources`)
 	defer rows.Close()
@@ -158,6 +163,8 @@ func (r *postgresRepository) FindAll() ([]*Resource, error) {
 	return result, err
 }
 
+// FindByVersion Implements the method of the Repository interface
+// Returns the resource matching the ResourceID and a particular resource version
 func (r *postgresRepository) FindByVersion(id ResourceID, version string) (*Resource, error) {
 	result := new(ResourceDTO)
 	availableVersions := []string{}
@@ -180,6 +187,7 @@ func (r *postgresRepository) FindByVersion(id ResourceID, version string) (*Reso
 	return result.ToEntity(), err
 }
 
+// findByAppVersion Returns the resource matching findByAppVersion and a particular resource version and a app version
 func (r *postgresRepository) findByAppVersion(id ResourceID, appVersion, version string) (*Resource, error) {
 	result := new(ResourceDTO)
 	availableVersions := []string{}
@@ -201,6 +209,7 @@ func (r *postgresRepository) findByAppVersion(id ResourceID, appVersion, version
 	return result.ToEntity(), err
 }
 
+// existAnyAppVersion Returns true if there is already a resource of that kind for that app version
 func (r *postgresRepository) existAnyAppVersion(id ResourceID, appVersions []string, version string) (bool, error) {
 	for _, appVersion := range appVersions {
 		resource, err := r.findByAppVersion(id, appVersion, version)

@@ -4,10 +4,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/promcat/test/fixtures/resources"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
-	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
+	"github.com/sysdiglabs/promcat/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/usecases"
 )
 
 var _ = Describe("RetrieveOneResourceByVersion use case", func() {

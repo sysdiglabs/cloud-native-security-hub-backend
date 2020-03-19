@@ -11,9 +11,9 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/infrastructure"
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/infrastructure"
+	"github.com/sysdiglabs/promcat/pkg/resource"
 )
 
 func main() {
@@ -37,7 +37,6 @@ func migrateDatabase(db *sql.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// TODO: Change this for production
 	migrator, err := migrate.NewWithDatabaseInstance("file://db/migrations", "postgres", driver)
 	if err != nil {
 		log.Fatal(err)
@@ -54,6 +53,10 @@ func migrateDatabase(db *sql.DB) {
 
 func importResources(db *sql.DB) {
 	log.Println("Importing resources")
+
+	// Clean the resources present in the DB
+	db.Exec("TRUNCATE TABLE resources")
+	db.Exec("TRUNCATE TABLE latest_resources")
 
 	resources, err := infrastructure.GetResourcesFromPath(os.Getenv("RESOURCES_PATH"))
 	if err != nil {
@@ -72,6 +75,9 @@ func importResources(db *sql.DB) {
 
 func importApps(db *sql.DB) {
 	log.Println("Importing apps")
+
+	// Clean the apps present in the DB
+	db.Exec("TRUNCATE TABLE apps")
 
 	apps, err := infrastructure.GetAppsFromPath(os.Getenv("APPS_PATH"))
 	if err != nil {

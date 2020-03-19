@@ -4,10 +4,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
-	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
+	"github.com/sysdiglabs/promcat/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/usecases"
 
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/promcat/test/fixtures/resources"
 )
 
 var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
@@ -21,7 +21,7 @@ var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
 	})
 
 	It("returns all the avaliable resources for an App", func() {
-		retrieved, _ := useCase.Execute("AWS Fargate")
+		retrieved, _ := useCase.Execute("aws-fargate")
 
 		Expect(retrieved).To(Equal([]*resource.Resource{resources.AwsFargateDescription()}))
 	})

@@ -1,4 +1,4 @@
-module github.com/sysdiglabs/prometheus-hub
+module github.com/sysdiglabs/promcat
 
 go 1.13
 

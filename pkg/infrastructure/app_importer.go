@@ -6,7 +6,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/app"
 )
 
 func GetAppsFromPath(path string) ([]*app.App, error) {

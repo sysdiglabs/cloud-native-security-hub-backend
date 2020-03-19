@@ -10,6 +10,8 @@ maintainers:
    - name: sysdiglabs
      link: github.com/sysdiglabs
 description: "Description of the alerts"
-Alerts: 
-   prometheusAlerts: "Prometheus Alert"
-   sysdigAlerts: "Sysdig Alert"
+configurations: 
+   - data: "Prometheus Alert"
+     kind: Prometheus
+   - data: "Sysdig Alert"
+     kind: Sysdig

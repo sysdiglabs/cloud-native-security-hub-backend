@@ -12,11 +12,11 @@ import (
 	"net/http/httptest"
 	"os"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
-	"github.com/sysdiglabs/prometheus-hub/web"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/resource"
+	"github.com/sysdiglabs/promcat/test/fixtures/apps"
+	"github.com/sysdiglabs/promcat/test/fixtures/resources"
+	"github.com/sysdiglabs/promcat/web"
 )
 
 func TestWeb(t *testing.T) {

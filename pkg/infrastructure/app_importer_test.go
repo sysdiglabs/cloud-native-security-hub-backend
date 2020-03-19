@@ -4,10 +4,10 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
+	"github.com/sysdiglabs/promcat/test/fixtures/apps"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/infrastructure"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/infrastructure"
 )
 
 var _ = Describe("App importation from YAML files", func() {

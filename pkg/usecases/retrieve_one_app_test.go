@@ -3,10 +3,10 @@ package usecases_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
+	"github.com/sysdiglabs/promcat/test/fixtures/apps"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/usecases"
 )
 
 var _ = Describe("RetrieveOneApp use case", func() {
@@ -19,7 +19,7 @@ var _ = Describe("RetrieveOneApp use case", func() {
 	})
 
 	It("returns one app", func() {
-		result, _ := useCase.Execute("AWS Fargate")
+		result, _ := useCase.Execute("aws-fargate")
 
 		Expect(result).To(Equal(apps.AwsFargate()))
 	})

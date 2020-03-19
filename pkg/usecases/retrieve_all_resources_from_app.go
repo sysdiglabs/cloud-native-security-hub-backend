@@ -3,8 +3,8 @@ package usecases
 import (
 	"fmt"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/resource"
 )
 
 type RetrieveAllResourcesFromApp struct {

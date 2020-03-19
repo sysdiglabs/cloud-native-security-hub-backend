@@ -1,6 +1,6 @@
 package usecases
 
-import "github.com/sysdiglabs/prometheus-hub/pkg/app"
+import "github.com/sysdiglabs/promcat/pkg/app"
 
 type RetrieveAllApps struct {
 	AppRepository app.Repository

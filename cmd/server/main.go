@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/sysdiglabs/prometheus-hub/web"
+	"github.com/sysdiglabs/promcat/web"
 )
 
 func main() {

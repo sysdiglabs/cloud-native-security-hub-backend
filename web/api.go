@@ -8,8 +8,8 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
-	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
+	"github.com/sysdiglabs/promcat/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/usecases"
 )
 
 type HandlerRepository interface {

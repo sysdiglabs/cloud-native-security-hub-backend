@@ -1,7 +1,7 @@
 package usecases
 
 import (
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/resource"
 )
 
 type RetrieveAllResources struct {
