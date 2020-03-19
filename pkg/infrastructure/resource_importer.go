@@ -6,7 +6,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/resource"
 )
 
 func GetResourcesFromPath(path string) ([]*resource.Resource, error) {

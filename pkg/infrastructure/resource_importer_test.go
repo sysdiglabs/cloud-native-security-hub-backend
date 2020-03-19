@@ -4,9 +4,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/infrastructure"
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/promcat/pkg/infrastructure"
+	"github.com/sysdiglabs/promcat/pkg/resource"
+	"github.com/sysdiglabs/promcat/test/fixtures/resources"
 )
 
 var _ = Describe("Resource importation from YAML files", func() {
@@ -16,6 +16,7 @@ var _ = Describe("Resource importation from YAML files", func() {
 
 		Expect(parsed).To(Equal([]*resource.Resource{
 			resources.AwsFargateAlertsWithoutAvailableVersions(),
+			resources.AwsFargateDashboardsWithoutAvailableVersions(),
 			resources.AwsFargateDescriptionWithoutAvailableVersions(),
 		}))
 	})

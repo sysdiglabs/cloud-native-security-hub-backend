@@ -4,9 +4,9 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/usecases"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/usecases"
+	"github.com/sysdiglabs/promcat/test/fixtures/apps"
 )
 
 var _ = Describe("RetrieveAllApps use case", func() {

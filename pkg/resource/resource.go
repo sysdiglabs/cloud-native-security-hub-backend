@@ -1,5 +1,6 @@
 package resource
 
+// Resource Any resource for an App
 type Resource struct {
 	ID                ResourceID
 	Kind              string
@@ -10,21 +11,18 @@ type Resource struct {
 	Maintainers       []*Maintainer
 	Description       string
 	Data              string
-	Dashboards        []*Dashboard
-	Alerts            *Alerts
+	Configurations    []*Configuration
 }
 
+// Maintainer Name and link of the maintainer of the Resource
 type Maintainer struct {
 	Name string
 	Link string
 }
 
-type Alerts struct {
-	PrometheusAlerts string
-	SysdigAlerts     string
-}
-
-type Dashboard struct {
+// Configuration Metadata and data of the configuration.
+// This is used for Resources of kind Dashboards and Alerts
+type Configuration struct {
 	Name        string
 	Kind        string
 	Image       string

@@ -69,7 +69,7 @@ data in the database:
 * `RESOURCES_PATH`: Path to prometheus-hub-resources/resources directory
 * `APPS_PATH`: Path to prometheus-hub-resources/apps directory
 
-These directories can be found in the [Prometheus Catalog Resources repository](https://github.com/sysdiglabs/prometheus-hub-resources).
+These directories can be found in the [Prometheus Catalog Resources repository](https://github.com/sysdiglabs/promcat-resources).
 
 Then with the `DATABASE_URL` set, execute:
 
@@ -86,7 +86,7 @@ some design decisions:
 
 * `pkg/usecases`: You will find the entry points in the `pkg/usecases` directory.
   One action per file, modeled like a command.
-* `pkg/resource` and `pkg/apps`: This is the domain code for security resources
+* `pkg/resource` and `pkg/apps`: This is the domain code for resources
   and apps. You will find the repositories, entities and value objects.
 * `test`: All our code is test driven, in this directory we have some fixtures
   to avoid repeating test data in the test code.

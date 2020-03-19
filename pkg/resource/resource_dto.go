@@ -4,41 +4,38 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	"log"
 )
 
+// ResourceDTO Allows to parse the resources from and to files
 type ResourceDTO struct {
-	Kind              string           `json:"kind" yaml:"kind"`
-	App               string           `json:"app" yaml:"app"`
-	AppID             string           `json:"appID" yaml:"-"`
-	Version           string           `json:"version" yaml:"version"`
-	AvailableVersions []string         `json:"availableVersions" yaml:"-"`
-	AppVersion        []string         `json:"appVersion" yaml:"appVersion"`
-	Maintainers       []*MaintainerDTO `json:"maintainers" yaml:"maintainers"`
-	Description       string           `json:"description,omitempty" yaml:"description"`
-	Data              string           `json:"data,omitempty" yaml:"data"`
-	Dashboards        []*DashboardDTO  `json:"dashboards,omitempty" yaml:"dashboards"`
-	Alerts            *AlertsDTO       `json:"alerts,omitempty" yaml:"alerts"`
+	Kind              string              `json:"kind" yaml:"kind"`
+	App               string              `json:"app" yaml:"app"`
+	AppID             string              `json:"appID" yaml:"-"`
+	Version           string              `json:"version" yaml:"version"`
+	AvailableVersions []string            `json:"availableVersions" yaml:"-"`
+	AppVersion        []string            `json:"appVersion" yaml:"appVersion"`
+	Maintainers       []*MaintainerDTO    `json:"maintainers" yaml:"maintainers"`
+	Description       string              `json:"description,omitempty" yaml:"description"`
+	Data              string              `json:"data,omitempty" yaml:"data"`
+	Configurations    []*ConfigurationDTO `json:"configurations,omitempty" yaml:"configurations"`
 }
 
+// MaintainerDTO Allows to parse Maintainers field
 type MaintainerDTO struct {
 	Name string `json:"name" yaml:"name"`
 	Link string `json:"link" yaml:"link"`
 }
 
-type AlertsDTO struct {
-	PrometheusAlerts string `json:"prometheusAlerts,omitempty" yaml:"prometheusAlerts"`
-	SysdigAlerts     string `json:"sysdigAlerts,omitempty" yaml:"sysdigAlerts"`
-}
-
-type DashboardDTO struct {
-	Name        string `json:"name" yaml:"name"`
+// ConfigurationDTO Allows to parse configurations for dashboards and alerts
+type ConfigurationDTO struct {
+	Name        string `json:"name,omitempty" yaml:"name"`
 	Kind        string `json:"kind" yaml:"kind"`
-	Image       string `json:"image" yaml:"image"`
-	Description string `json:"description" yaml:"description"`
+	Image       string `json:"image,omitempty" yaml:"image"`
+	Description string `json:"description,omitempty" yaml:"description"`
 	Data        string `json:"data" yaml:"data"`
 }
 
+// NewResourceDTO Creates a new resourceDTO from an entity Resource
 func NewResourceDTO(entity *Resource) *ResourceDTO {
 	resource := ResourceDTO{
 		Kind:              entity.Kind,
@@ -50,19 +47,7 @@ func NewResourceDTO(entity *Resource) *ResourceDTO {
 		Maintainers:       parseMaintainers(entity.Maintainers),
 		Description:       entity.Description,
 		Data:              entity.Data,
-		Dashboards:        parseDashboards(entity.Dashboards),
-	}
-
-	if entity.Kind == "Alerts" {
-		if entity.Alerts == nil {
-			log.Printf("Warning: Resource of kind 'Alerts' without field Alerts. App: %s", string(entity.App))
-			resource.Alerts = &AlertsDTO{
-				PrometheusAlerts: "",
-				SysdigAlerts:     "",
-			}
-		} else {
-			resource.Alerts = parseAlerts(*entity.Alerts)
-		}
+		Configurations:    parseConfigurations(entity.Configurations),
 	}
 
 	return &resource
@@ -81,29 +66,23 @@ func parseMaintainers(maintainers []*Maintainer) []*MaintainerDTO {
 	return result
 }
 
-func parseDashboards(dashboards []*Dashboard) []*DashboardDTO {
-	var result []*DashboardDTO
+func parseConfigurations(configurations []*Configuration) []*ConfigurationDTO {
+	var result []*ConfigurationDTO
 
-	for _, dashboard := range dashboards {
-		result = append(result, &DashboardDTO{
-			Name:        dashboard.Name,
-			Kind:        dashboard.Kind,
-			Image:       dashboard.Image,
-			Description: dashboard.Description,
-			Data:        dashboard.Data,
+	for _, configuration := range configurations {
+		result = append(result, &ConfigurationDTO{
+			Name:        configuration.Name,
+			Kind:        configuration.Kind,
+			Image:       configuration.Image,
+			Description: configuration.Description,
+			Data:        configuration.Data,
 		})
 	}
 
 	return result
 }
 
-func parseAlerts(alerts Alerts) *AlertsDTO {
-	return &AlertsDTO{
-		PrometheusAlerts: alerts.PrometheusAlerts,
-		SysdigAlerts:     alerts.SysdigAlerts,
-	}
-}
-
+// ToEntity Converts a ResourceDTO into an entity Resource
 func (r *ResourceDTO) ToEntity() *Resource {
 	resource := Resource{
 		ID: NewResourceID(r.App,
@@ -117,21 +96,7 @@ func (r *ResourceDTO) ToEntity() *Resource {
 		Maintainers:       toEntityMaintainers(r.Maintainers),
 		Description:       r.Description,
 		Data:              r.Data,
-		Dashboards:        toEntityDashboards(r.Dashboards),
-	}
-
-	if r.Kind == "Alerts" {
-		if r.Alerts == nil {
-			log.Printf("Resource of kind 'Alerts' without field Alerts. AppID: %s", string(r.AppID))
-			resource.Alerts = &Alerts{
-				PrometheusAlerts: "",
-				SysdigAlerts:     "",
-			}
-		} else {
-			resource.Alerts = toEntityAlerts(*r.Alerts)
-		}
-	} else {
-		resource.Alerts = nil
+		Configurations:    toEntityConfigurations(r.Configurations),
 	}
 
 	return &resource
@@ -151,33 +116,28 @@ func toEntityMaintainers(maintainers []*MaintainerDTO) []*Maintainer {
 	return result
 }
 
-func toEntityDashboards(dashboards []*DashboardDTO) []*Dashboard {
-	var result []*Dashboard
+func toEntityConfigurations(configurations []*ConfigurationDTO) []*Configuration {
+	var result []*Configuration
 
-	for _, dashboard := range dashboards {
-		result = append(result, &Dashboard{
-			Name:        dashboard.Name,
-			Kind:        dashboard.Kind,
-			Image:       dashboard.Image,
-			Description: dashboard.Description,
-			Data:        dashboard.Data,
+	for _, configuration := range configurations {
+		result = append(result, &Configuration{
+			Name:        configuration.Name,
+			Kind:        configuration.Kind,
+			Image:       configuration.Image,
+			Description: configuration.Description,
+			Data:        configuration.Data,
 		})
 	}
 
 	return result
 }
 
-func toEntityAlerts(alerts AlertsDTO) *Alerts {
-	return &Alerts{
-		PrometheusAlerts: alerts.PrometheusAlerts,
-		SysdigAlerts:     alerts.SysdigAlerts,
-	}
-}
-
+// Value Returns the ResourceDTO parsed as JSON
 func (r ResourceDTO) Value() (driver.Value, error) {
 	return json.Marshal(r)
 }
 
+// Scan Parses an interface and returns a ResourceDTO with its content
 func (r *ResourceDTO) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {

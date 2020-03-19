@@ -3,8 +3,8 @@ package app_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/test/fixtures/apps"
 
 	"database/sql"
 	"os"

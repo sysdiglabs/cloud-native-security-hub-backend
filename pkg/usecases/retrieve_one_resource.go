@@ -1,6 +1,6 @@
 package usecases
 
-import "github.com/sysdiglabs/prometheus-hub/pkg/resource"
+import "github.com/sysdiglabs/promcat/pkg/resource"
 
 type RetrieveOneResource struct {
 	ResourceRepository resource.Repository

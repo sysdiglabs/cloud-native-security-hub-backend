@@ -4,12 +4,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/promcat/test/fixtures/resources"
 
 	"database/sql"
 	"os"
 
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
+	"github.com/sysdiglabs/promcat/pkg/resource"
 )
 
 var _ = Describe("Postgres Resource Repository", func() {

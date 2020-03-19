@@ -1,7 +1,7 @@
 package usecases
 
 import (
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/app"
 )
 
 type RetrieveOneApp struct {

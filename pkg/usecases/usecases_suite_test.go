@@ -5,10 +5,10 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/sysdiglabs/prometheus-hub/pkg/app"
-	"github.com/sysdiglabs/prometheus-hub/pkg/resource"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/apps"
-	"github.com/sysdiglabs/prometheus-hub/test/fixtures/resources"
+	"github.com/sysdiglabs/promcat/pkg/app"
+	"github.com/sysdiglabs/promcat/pkg/resource"
+	"github.com/sysdiglabs/promcat/test/fixtures/apps"
+	"github.com/sysdiglabs/promcat/test/fixtures/resources"
 )
 
 func TestUsecases(t *testing.T) {

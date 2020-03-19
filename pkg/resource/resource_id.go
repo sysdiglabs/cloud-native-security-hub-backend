@@ -4,6 +4,7 @@ import (
 	"github.com/gosimple/slug"
 )
 
+// ResourceID is defined as a combination of kind, appId and appVersion
 type ResourceID struct {
 	kind       string
 	app        string
@@ -11,6 +12,7 @@ type ResourceID struct {
 	appVersion string
 }
 
+// NewResourceID Generates a new ResourceID
 func NewResourceID(app, kind string, appVersion []string) ResourceID {
 	resourceID := ResourceID{
 		kind:       kind,

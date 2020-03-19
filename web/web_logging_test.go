@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/sysdiglabs/prometheus-hub/web"
+	"github.com/sysdiglabs/promcat/web"
 )
 
 var _ = Describe("HTTP Server Logging", func() {
