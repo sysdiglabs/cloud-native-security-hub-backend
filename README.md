@@ -69,7 +69,9 @@ data in the database:
 * `RESOURCES_PATH`: Path to prometheus-hub-resources/resources directory
 * `APPS_PATH`: Path to prometheus-hub-resources/apps directory
 
+
 These directories can be found in the [Prometheus Catalog Resources repository](https://github.com/sysdiglabs/promcat-resources).
+
 
 Then with the `DATABASE_URL` set, execute:
 
