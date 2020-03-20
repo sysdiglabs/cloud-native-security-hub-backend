@@ -1,28 +1,8 @@
-apiVersion: networking.gke.io/v1beta1
-kind: ManagedCertificate
-metadata:
-  name: backend
-  namespace: promhub
-spec:
-  domains:
-    - api.promcat.io
----
-apiVersion: networking.gke.io/v1beta1
-kind: ManagedCertificate
-metadata:
-  name: frontend
-  namespace: promhub
-spec:
-  domains:
-    - promcat.io
----
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: backend
   namespace: promhub
-  annotations:
-    networking.gke.io/managed-certificates: backend
 spec:
   rules:
   - http:
@@ -36,8 +16,6 @@ kind: Ingress
 metadata:
   name: frontend
   namespace: promhub
-  annotations:
-    networking.gke.io/managed-certificates: frontend
 spec:
   rules:
   - http:
