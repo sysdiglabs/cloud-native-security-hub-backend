@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/mateo-burillo-ns/promhub-frontend:latest
+        image: gcr.io/mateo-burillo-ns/promcat-frontend:latest
         ports:
         - containerPort: 3000
         env:
           - name: BASE_URL
-            value: https://promhub.io
+            value: https://promcat.io
           - name: API_URL
-            value: https://api.promhub.io
+            value: https://api.promcat.io
