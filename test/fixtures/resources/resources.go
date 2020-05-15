@@ -46,9 +46,9 @@ func AwsFargateAlerts() *resource.Resource {
 func AwsFargateAlertsWithoutAvailableVersions() *resource.Resource {
 	return &resource.Resource{
 		ID: resource.NewResourceID("AWS Fargate",
-			"Alerts",
+			"Alert",
 			[]string{"1.0.0"}),
-		Kind:       "Alerts",
+		Kind:       "Alert",
 		App:        "AWS Fargate",
 		Version:    "1.0.0",
 		AppVersion: []string{"1.0.0", "1.0.1"},
@@ -85,9 +85,9 @@ func AwsFargateDashboards() *resource.Resource {
 func AwsFargateDashboardsWithoutAvailableVersions() *resource.Resource {
 	return &resource.Resource{
 		ID: resource.NewResourceID("AWS Fargate",
-			"Dashboards",
+			"Dashboard",
 			[]string{"1.0.0"}),
-		Kind:       "Dashboards",
+		Kind:       "Dashboard",
 		App:        "AWS Fargate",
 		Version:    "1.0.0",
 		AppVersion: []string{"1.0.0", "1.0.1"},
