@@ -19,7 +19,7 @@ var _ = Describe("ResourceID", func() {
 
 		It("considers the kind of the resource", func() {
 			one := resource.NewResourceID("aws-fargate", "Description", []string{"1.0.0"})
-			other := resource.NewResourceID("aws-fargate", "Alerts", []string{"1.0.0"})
+			other := resource.NewResourceID("aws-fargate", "Alert", []string{"1.0.0"})
 
 			Expect(one).NotTo(Equal(other))
 		})
