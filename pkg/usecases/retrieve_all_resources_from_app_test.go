@@ -21,14 +21,14 @@ var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
 	})
 
 	It("returns all the avaliable resources for an App", func() {
-		retrieved, _ := useCase.Execute("aws-fargate")
+		retrieved, _ := useCase.Execute("aws-fargate", "1.0.0")
 
 		Expect(retrieved).To(Equal([]*resource.Resource{resources.AwsFargateDescription()}))
 	})
 
 	Context("when App does not exist", func() {
 		It("returns App not found error", func() {
-			retrieved, err := useCase.Execute("not-found")
+			retrieved, err := useCase.Execute("not-found", "1.0.0")
 
 			Expect(retrieved).To(BeEmpty())
 			Expect(err).To(HaveOccurred())
@@ -37,7 +37,7 @@ var _ = Describe("RetrieveAllResourcesFromApp use case", func() {
 
 	Context("when vendor doesn't have resources", func() {
 		It("returns an empty resource collection", func() {
-			retrieved, err := useCase.Execute("lambda")
+			retrieved, err := useCase.Execute("lambda", "1.0.0")
 
 			Expect(retrieved).To(BeEmpty())
 			Expect(err).To(HaveOccurred())
