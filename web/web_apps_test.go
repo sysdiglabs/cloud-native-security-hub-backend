@@ -64,5 +64,13 @@ var _ = Describe("HTTP API for apps", func() {
 				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
 			})
 		})
+
+		Context("when app version is not found", func() {
+			It("returns a NOTFOUND", func() {
+				response := doGetRequest("/apps/aws-fargate/1.3/resources")
+
+				Expect(response.StatusCode).To(Equal(http.StatusNotFound))
+			})
+		})
 	})
 })

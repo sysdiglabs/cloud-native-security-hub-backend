@@ -166,7 +166,7 @@ func (h *handlerRepository) retrieveAllResourcesFromAppHandler(
 	request *http.Request,
 	params httprouter.Params) {
 	useCase := h.factory.NewRetrieveAllResourcesFromAppUseCase()
-	resources, err := useCase.Execute(params.ByName("app"))
+	resources, err := useCase.Execute(params.ByName("app"), params.ByName("appVersion"))
 	if err != nil {
 		writer.WriteHeader(404)
 		h.logRequest(request, 404)
