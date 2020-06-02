@@ -12,7 +12,7 @@ type RetrieveAllResourcesFromApp struct {
 	ResourceRepository resource.Repository
 }
 
-func (r *RetrieveAllResourcesFromApp) Execute(appID string) (res []*resource.Resource, err error) {
+func (r *RetrieveAllResourcesFromApp) Execute(appID string, appVersion string) (res []*resource.Resource, err error) {
 	app, err := r.AppRepository.FindById(appID)
 	if err != nil {
 		return
@@ -25,13 +25,18 @@ func (r *RetrieveAllResourcesFromApp) Execute(appID string) (res []*resource.Res
 
 	for _, r := range resources {
 		if app.Name == r.App {
-			res = append(res, r)
+			for _, resourceAppVersion := range r.AppVersion {
+				if appVersion == resourceAppVersion {
+					res = append(res, r)
+				}
+			}
 		}
 	}
 
 	if len(res) == 0 {
 		err = fmt.Errorf("no resources available for this app")
+		return res, err
 	}
 
-	return
+	return res, err
 }
