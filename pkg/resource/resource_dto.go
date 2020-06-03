@@ -32,7 +32,8 @@ type ConfigurationDTO struct {
 	Kind        string `json:"kind" yaml:"kind"`
 	Image       string `json:"image,omitempty" yaml:"image"`
 	Description string `json:"description,omitempty" yaml:"description"`
-	Data        string `json:"data" yaml:"data"`
+	File        string `json:"file,omitempty" yaml:"file"`
+	Data        string `json:"data,omitempty" yaml:"data"`
 }
 
 // NewResourceDTO Creates a new resourceDTO from an entity Resource
@@ -75,6 +76,7 @@ func parseConfigurations(configurations []*Configuration) []*ConfigurationDTO {
 			Kind:        configuration.Kind,
 			Image:       configuration.Image,
 			Description: configuration.Description,
+			File:        configuration.File,
 			Data:        configuration.Data,
 		})
 	}
@@ -125,6 +127,7 @@ func toEntityConfigurations(configurations []*ConfigurationDTO) []*Configuration
 			Kind:        configuration.Kind,
 			Image:       configuration.Image,
 			Description: configuration.Description,
+			File:        configuration.File,
 			Data:        configuration.Data,
 		})
 	}

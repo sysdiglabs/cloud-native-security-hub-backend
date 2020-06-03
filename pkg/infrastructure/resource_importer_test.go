@@ -18,6 +18,7 @@ var _ = Describe("Resource importation from YAML files", func() {
 			resources.AwsFargateAlertsWithoutAvailableVersions(),
 			resources.AwsFargateDashboardsWithoutAvailableVersions(),
 			resources.AwsFargateDescriptionWithoutAvailableVersions(),
+			resources.AwsLambdaDashboardsWithoutAvailableVersions(),
 		}))
 	})
 
