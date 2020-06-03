@@ -27,5 +27,6 @@ type Configuration struct {
 	Kind        string
 	Image       string
 	Description string
+	File        string
 	Data        string
 }
