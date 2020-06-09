@@ -8,16 +8,10 @@ type Resource struct {
 	Version           string
 	AvailableVersions []string
 	AppVersion        []string
-	Maintainers       []*Maintainer
+	Maintainers       string
 	Description       string
 	Data              string
 	Configurations    []*Configuration
-}
-
-// Maintainer Name and link of the maintainer of the Resource
-type Maintainer struct {
-	Name string
-	Link string
 }
 
 // Configuration Metadata and data of the configuration.

@@ -19,17 +19,12 @@ func AwsFargateDescriptionWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Fargate",
 			"Description",
 			[]string{"1.0.0", "1.0.1"}),
-		Kind:       "Description",
-		App:        "AWS Fargate",
-		Version:    "1.0.0",
-		AppVersion: []string{"1.0.0", "1.0.1"},
-		Maintainers: []*resource.Maintainer{
-			{
-				Name: "sysdiglabs",
-				Link: "github.com/sysdiglabs",
-			},
-		},
-		Data: "# AWS Fargate\nDescription.",
+		Kind:        "Description",
+		App:         "AWS Fargate",
+		Version:     "1.0.0",
+		AppVersion:  []string{"1.0.0", "1.0.1"},
+		Maintainers: "Configuration files and dashboards maintained by [Sysdig team](https://sysdig.com/).",
+		Data:        "# AWS Fargate\nDescription.",
 	}
 }
 
@@ -48,16 +43,10 @@ func AwsFargateAlertsWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Fargate",
 			"Alert",
 			[]string{"1.0.0"}),
-		Kind:       "Alert",
-		App:        "AWS Fargate",
-		Version:    "1.0.0",
-		AppVersion: []string{"1.0.0", "1.0.1"},
-		Maintainers: []*resource.Maintainer{
-			{
-				Name: "sysdiglabs",
-				Link: "github.com/sysdiglabs",
-			},
-		},
+		Kind:        "Alert",
+		App:         "AWS Fargate",
+		Version:     "1.0.0",
+		AppVersion:  []string{"1.0.0", "1.0.1"},
 		Description: "Description of the alerts",
 		Configurations: []*resource.Configuration{
 			{
@@ -87,16 +76,10 @@ func AwsFargateDashboardsWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Fargate",
 			"Dashboard",
 			[]string{"1.0.0"}),
-		Kind:       "Dashboard",
-		App:        "AWS Fargate",
-		Version:    "1.0.0",
-		AppVersion: []string{"1.0.0", "1.0.1"},
-		Maintainers: []*resource.Maintainer{
-			{
-				Name: "sysdiglabs",
-				Link: "github.com/sysdiglabs",
-			},
-		},
+		Kind:        "Dashboard",
+		App:         "AWS Fargate",
+		Version:     "1.0.0",
+		AppVersion:  []string{"1.0.0", "1.0.1"},
 		Description: "How to install dashboards",
 		Configurations: []*resource.Configuration{
 			{
@@ -125,16 +108,10 @@ func AwsLambdaDashboardsWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Lambda",
 			"Dashboard",
 			[]string{"1.0.0"}),
-		Kind:       "Dashboard",
-		App:        "AWS Lambda",
-		Version:    "1.0.0",
-		AppVersion: []string{"1.0.0", "1.0.1"},
-		Maintainers: []*resource.Maintainer{
-			{
-				Name: "sysdiglabs",
-				Link: "github.com/sysdiglabs",
-			},
-		},
+		Kind:        "Dashboard",
+		App:         "AWS Lambda",
+		Version:     "1.0.0",
+		AppVersion:  []string{"1.0.0", "1.0.1"},
 		Description: "How to install dashboards",
 		Configurations: []*resource.Configuration{
 			{
