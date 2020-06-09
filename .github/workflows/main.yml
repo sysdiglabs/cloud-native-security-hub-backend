@@ -25,9 +25,6 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: |
-        apt-get update && apt-get upgrade
     - name: build and push docker image
       uses: docker/build-push-action@v1
       with:
