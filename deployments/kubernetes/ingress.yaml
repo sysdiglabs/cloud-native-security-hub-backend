@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: backend
-  namespace: promhub
+  namespace: staging
 spec:
   rules:
   - http:
@@ -15,7 +15,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: frontend
-  namespace: promhub
+  namespace: staging
 spec:
   rules:
   - http:
