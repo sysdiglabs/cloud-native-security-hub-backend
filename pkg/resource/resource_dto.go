@@ -14,16 +14,10 @@ type ResourceDTO struct {
 	Version           string              `json:"version" yaml:"version"`
 	AvailableVersions []string            `json:"availableVersions" yaml:"-"`
 	AppVersion        []string            `json:"appVersion" yaml:"appVersion"`
-	Maintainers       []*MaintainerDTO    `json:"maintainers" yaml:"maintainers"`
+	Maintainers       string              `json:"maintainers,omitempty" yaml:"maintainers"`
 	Description       string              `json:"description,omitempty" yaml:"description"`
 	Data              string              `json:"data,omitempty" yaml:"data"`
 	Configurations    []*ConfigurationDTO `json:"configurations,omitempty" yaml:"configurations"`
-}
-
-// MaintainerDTO Allows to parse Maintainers field
-type MaintainerDTO struct {
-	Name string `json:"name" yaml:"name"`
-	Link string `json:"link" yaml:"link"`
 }
 
 // ConfigurationDTO Allows to parse configurations for dashboards and alerts
@@ -45,26 +39,13 @@ func NewResourceDTO(entity *Resource) *ResourceDTO {
 		Version:           entity.Version,
 		AvailableVersions: entity.AvailableVersions,
 		AppVersion:        entity.AppVersion,
-		Maintainers:       parseMaintainers(entity.Maintainers),
+		Maintainers:       entity.Maintainers,
 		Description:       entity.Description,
 		Data:              entity.Data,
 		Configurations:    parseConfigurations(entity.Configurations),
 	}
 
 	return &resource
-}
-
-func parseMaintainers(maintainers []*Maintainer) []*MaintainerDTO {
-	var result []*MaintainerDTO
-
-	for _, maintainer := range maintainers {
-		result = append(result, &MaintainerDTO{
-			Name: maintainer.Name,
-			Link: maintainer.Link,
-		})
-	}
-
-	return result
 }
 
 func parseConfigurations(configurations []*Configuration) []*ConfigurationDTO {
@@ -95,7 +76,7 @@ func (r *ResourceDTO) ToEntity() *Resource {
 		Version:           r.Version,
 		AvailableVersions: r.AvailableVersions,
 		AppVersion:        r.AppVersion,
-		Maintainers:       toEntityMaintainers(r.Maintainers),
+		Maintainers:       r.Maintainers,
 		Description:       r.Description,
 		Data:              r.Data,
 		Configurations:    toEntityConfigurations(r.Configurations),
@@ -103,19 +84,6 @@ func (r *ResourceDTO) ToEntity() *Resource {
 
 	return &resource
 
-}
-
-func toEntityMaintainers(maintainers []*MaintainerDTO) []*Maintainer {
-	var result []*Maintainer
-
-	for _, maintainer := range maintainers {
-		result = append(result, &Maintainer{
-			Name: maintainer.Name,
-			Link: maintainer.Link,
-		})
-	}
-
-	return result
 }
 
 func toEntityConfigurations(configurations []*ConfigurationDTO) []*Configuration {
