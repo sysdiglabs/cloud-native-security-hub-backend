@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: promhub
+  namespace: staging
   labels:
     app: backend
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/mateo-burillo-ns/promcat-backend:latest
+        image: gcr.io/mateo-burillo-ns/promcat-backend:staging
         imagePullPolicy: Always
         env:
           - name: DATABASE_URL

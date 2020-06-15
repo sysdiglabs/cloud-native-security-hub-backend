@@ -20,7 +20,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: dbimport
-  namespace: promhub
+  namespace: staging
   labels:
     app: dbimport
 spec:

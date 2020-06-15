@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: promhub
+  namespace: staging
   labels:
     app: frontend
 spec:
@@ -22,6 +22,6 @@ spec:
         - containerPort: 3000
         env:
           - name: BASE_URL
-            value: https://promcat.io
+            value: frontend:8080
           - name: API_URL
-            value: https://api.promcat.io
+            value: backend:32097
