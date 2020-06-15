@@ -1,8 +1,29 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: staging_backend
+  namespace: staging
+spec:
+  domains:
+    - staging.api.promcat.io
+---
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: staging_frontend
+  namespace: staging
+spec:
+  domains:
+    - staging.promhub.io
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: backend
   namespace: staging
+  annotations: 
+    kubernetes.io/ingress.global-static-ip-name: promcat-frontend
+    networking.gke.io/managed-certificates: staging_backend
 spec:
   rules:
   - http:
@@ -16,6 +37,9 @@ kind: Ingress
 metadata:
   name: frontend
   namespace: staging
+  annotations: 
+    kubernetes.io/ingress.global-static-ip-name: promcat-frontend
+    networking.gke.io/managed-certificates: staging_frontend
 spec:
   rules:
   - http:

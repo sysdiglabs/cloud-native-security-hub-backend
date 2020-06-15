@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: wait-script
-  namespace: staging
+  namespace: promhub
   labels:
     name: wait-script
 data:
