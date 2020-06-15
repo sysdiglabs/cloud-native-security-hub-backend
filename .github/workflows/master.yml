@@ -33,7 +33,7 @@ jobs:
         registry: gcr.io
         dockerfile: Dockerfile.server
         repository: mateo-burillo-ns/promcat-backend
-        tags: staging
+        tags: latest
     - name: build and push docker image
       uses: docker/build-push-action@v1
       with:
@@ -42,4 +42,4 @@ jobs:
         registry: gcr.io
         dockerfile: Dockerfile.dbimport
         repository: mateo-burillo-ns/promcat-dbimport
-        tags: staging
+        tags: latest
