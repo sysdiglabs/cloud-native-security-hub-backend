@@ -19,12 +19,12 @@ func AwsFargateDescriptionWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Fargate",
 			"Description",
 			[]string{"1.0.0", "1.0.1"}),
-		Kind:        "Description",
-		App:         "AWS Fargate",
-		Version:     "1.0.0",
-		AppVersion:  []string{"1.0.0", "1.0.1"},
-		Maintainers: "Configuration files and dashboards maintained by [Sysdig team](https://sysdig.com/).",
-		Data:        "# AWS Fargate\nDescription.",
+		Kind:            "Description",
+		App:             "AWS Fargate",
+		Version:         "1.0.0",
+		AppVersion:      []string{"1.0.0", "1.0.1"},
+		Description:     "# AWS Fargate\nDescription.",
+		DescriptionFile: "README.md",
 	}
 }
 
@@ -43,11 +43,12 @@ func AwsFargateAlertsWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Fargate",
 			"Alert",
 			[]string{"1.0.0"}),
-		Kind:        "Alert",
-		App:         "AWS Fargate",
-		Version:     "1.0.0",
-		AppVersion:  []string{"1.0.0", "1.0.1"},
-		Description: "Description of the alerts",
+		Kind:            "Alert",
+		App:             "AWS Fargate",
+		Version:         "1.0.0",
+		AppVersion:      []string{"1.0.0", "1.0.1"},
+		Description:     "Description of the alerts",
+		DescriptionFile: "ALERTS.md",
 		Configurations: []*resource.Configuration{
 			{
 				Kind: "Prometheus",
@@ -76,11 +77,10 @@ func AwsFargateDashboardsWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Fargate",
 			"Dashboard",
 			[]string{"1.0.0"}),
-		Kind:        "Dashboard",
-		App:         "AWS Fargate",
-		Version:     "1.0.0",
-		AppVersion:  []string{"1.0.0", "1.0.1"},
-		Description: "How to install dashboards",
+		Kind:       "Dashboard",
+		App:        "AWS Fargate",
+		Version:    "1.0.0",
+		AppVersion: []string{"1.0.0", "1.0.1"},
 		Configurations: []*resource.Configuration{
 			{
 				Name:        "Grafana Dashboard",
@@ -108,11 +108,10 @@ func AwsLambdaDashboardsWithoutAvailableVersions() *resource.Resource {
 		ID: resource.NewResourceID("AWS Lambda",
 			"Dashboard",
 			[]string{"1.0.0"}),
-		Kind:        "Dashboard",
-		App:         "AWS Lambda",
-		Version:     "1.0.0",
-		AppVersion:  []string{"1.0.0", "1.0.1"},
-		Description: "How to install dashboards",
+		Kind:       "Dashboard",
+		App:        "AWS Lambda",
+		Version:    "1.0.0",
+		AppVersion: []string{"1.0.0", "1.0.1"},
 		Configurations: []*resource.Configuration{
 			{
 				Name:        "Sysdig Dashboard",
