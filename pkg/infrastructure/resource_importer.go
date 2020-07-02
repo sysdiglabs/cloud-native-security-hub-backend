@@ -52,6 +52,17 @@ func getResourceFromFile(path string) (*resource.Resource, error) {
 
 	resourceEntity = dto.ToEntity()
 
+	// If there is a 'descriptionFile' field, fill 'description' field with its content
+	if resourceEntity.DescriptionFile != "" {
+		fileToIncludePath := fmt.Sprintf("%s/%s", filepath.Dir(path), resourceEntity.DescriptionFile)
+		bytes, err := ioutil.ReadFile(fileToIncludePath)
+		if err != nil {
+			fmt.Print(err)
+		} else {
+			resourceEntity.Description = string(bytes)
+		}
+	}
+
 	// If in the configurations there are 'file' fields, fill the 'data' field with its content
 	if resourceEntity.Configurations != nil {
 		for _, configuration := range resourceEntity.Configurations {

@@ -14,8 +14,8 @@ type ResourceDTO struct {
 	Version           string              `json:"version" yaml:"version"`
 	AvailableVersions []string            `json:"availableVersions" yaml:"-"`
 	AppVersion        []string            `json:"appVersion" yaml:"appVersion"`
-	Maintainers       string              `json:"maintainers,omitempty" yaml:"maintainers"`
 	Description       string              `json:"description,omitempty" yaml:"description"`
+	DescriptionFile   string              `json:"descriptionFile,omitempty" yaml:"descriptionFile"`
 	Data              string              `json:"data,omitempty" yaml:"data"`
 	Configurations    []*ConfigurationDTO `json:"configurations,omitempty" yaml:"configurations"`
 }
@@ -39,8 +39,8 @@ func NewResourceDTO(entity *Resource) *ResourceDTO {
 		Version:           entity.Version,
 		AvailableVersions: entity.AvailableVersions,
 		AppVersion:        entity.AppVersion,
-		Maintainers:       entity.Maintainers,
 		Description:       entity.Description,
+		DescriptionFile:   entity.DescriptionFile,
 		Data:              entity.Data,
 		Configurations:    parseConfigurations(entity.Configurations),
 	}
@@ -76,8 +76,8 @@ func (r *ResourceDTO) ToEntity() *Resource {
 		Version:           r.Version,
 		AvailableVersions: r.AvailableVersions,
 		AppVersion:        r.AppVersion,
-		Maintainers:       r.Maintainers,
 		Description:       r.Description,
+		DescriptionFile:   r.DescriptionFile,
 		Data:              r.Data,
 		Configurations:    toEntityConfigurations(r.Configurations),
 	}

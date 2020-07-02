@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: backend
+  namespace: staging
+  annotations: 
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt"
+spec:
+  rules:
+  - host: staging.api.promcat.io
+    http:
+      paths:
+      - backend:
+          serviceName: backend
+          servicePort: 8080
+  tls:
+  - hosts:
+    - staging.api.promcat.io
+    secretName: backend-tls
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+  namespace: staging
+  annotations: 
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt"
+spec:
+  rules:
+  - host: staging.promcat.io
+    http:
+      paths:
+      - backend:
+          serviceName: frontend
+          servicePort: 3000
+  tls:
+  - hosts:
+    - staging.promcat.io
+    secretName: frontend-tls

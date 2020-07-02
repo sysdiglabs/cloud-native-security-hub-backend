@@ -8,8 +8,8 @@ type Resource struct {
 	Version           string
 	AvailableVersions []string
 	AppVersion        []string
-	Maintainers       string
 	Description       string
+	DescriptionFile   string
 	Data              string
 	Configurations    []*Configuration
 }
