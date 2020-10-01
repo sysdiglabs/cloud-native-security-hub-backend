@@ -6,7 +6,7 @@ version: 1.0.0
 appVersion:
    - 1.0.0
    - 1.0.1
-description: "Description of the alerts"
+descriptionFile: "ALERTS.md"
 configurations: 
    - data: "Prometheus Alert"
      kind: Prometheus

@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/mateo-burillo-ns/promcat-frontend:latest
+        image: gcr.io/mateo-burillo-ns/promcat-frontend:staging
         ports:
         - containerPort: 3000
         env:
           - name: BASE_URL
-            value: frontend:8080
+            value: https://staging.promcat.io
           - name: API_URL
-            value: backend:32097
+            value: https://staging.api.promcat.io

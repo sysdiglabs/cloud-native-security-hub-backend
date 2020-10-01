@@ -1,0 +1,16 @@
+kind: Issuer
+apiVersion: cert-manager.io/v1alpha2
+metadata:
+  name: letsencrypt
+  namespace: promhub
+spec:
+  acme:
+    email: david.lorite@sysdig.com
+    privateKeySecretRef:
+      name: letsencrypt
+    server: 'https://acme-v02.api.letsencrypt.org/directory'
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
+
