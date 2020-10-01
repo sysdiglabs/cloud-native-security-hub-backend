@@ -37,22 +37,22 @@ $ go run cmd/server/main.go
 ### Endpoints of the API
 
 ```
-URL: /apps
+URL: /v1/apps
 RESPONSE: JSON with all the apps
 
-URL: /apps/:app
+URL: /v1/apps/:app
 RESPONSE: JSON with a specific 'app'
 
-URL: /apps/:app/:appVersion/resources
+URL: /v1/apps/:app/:appVersion/resources
 RESPONSE: JSON with all the resources for a specific 'version' of an 'app'
 
-URL: /resources
+URL: /v1/resources
 RESPONSE: JSON with all the resources
 
-URL: /resources/:kind/:app/:appVersion
+URL: /v1/resources/:kind/:app/:appVersion
 RESPONSE: JSON with the latest version of the 'kind' of resource for a specific 'version' of an 'app' 
 
-URL: /resources/:kind/:app/:appVersion/:version
+URL: /v1/resources/:kind/:app/:appVersion/:version
 RESPONSE: JSON with the specific 'version' of the 'kind' of resource for a specific 'version' of an 'app' 
 ```
 
