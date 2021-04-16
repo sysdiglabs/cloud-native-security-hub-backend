@@ -1,0 +1,82 @@
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: jetstack
+    url: https://charts.jetstack.io/
+  - name: incubator
+    url: https://charts.helm.sh/incubator
+
+releases:
+  - name: nginx-ingress
+    chart: ingress-nginx/ingress-nginx
+    version: 2.7.0
+    values:
+      - controller:
+          service:
+            type: LoadBalancer
+            loadBalancerIP: 35.226.32.216
+          metrics:
+            port: 10254
+            # if this port is changed, change healthz-port: in extraArgs: accordingly
+            enabled: true
+          podAnnotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "10254"
+
+  - name: cert-manager
+    chart: jetstack/cert-manager
+    namespace: cert-manager
+    values:
+      - prometheus:
+          enabled: true
+      - installCRDs: true
+
+  - name: cert-issuer-staging
+    chart: incubator/raw
+    needs: ["cert-manager/cert-manager"]
+    values:
+      - resources:
+        - apiVersion: cert-manager.io/v1
+          kind: Issuer
+          metadata:
+            name: letsencrypt
+            namespace: staging
+          spec:
+            acme:
+              # The ACME server URL
+              server: https://acme-v02.api.letsencrypt.org/directory
+              # Email address used for ACME registration
+              email: david.lorite@sysdig.com
+              # Name of a secret used to store the ACME account private key
+              privateKeySecretRef:
+                name: letsencrypt
+              # Enable the HTTP-01 challenge provider
+              solvers:
+              - http01:
+                  ingress:
+                    class:  nginx
+
+  - name: cert-issuer-promhub
+    chart: incubator/raw
+    needs: ["cert-manager/cert-manager"]
+    values:
+      - resources:
+        - apiVersion: cert-manager.io/v1
+          kind: Issuer
+          metadata:
+            name: letsencrypt
+            namespace: promhub
+          spec:
+            acme:
+              # The ACME server URL
+              server: https://acme-v02.api.letsencrypt.org/directory
+              # Email address used for ACME registration
+              email: david.lorite@sysdig.com
+              # Name of a secret used to store the ACME account private key
+              privateKeySecretRef:
+                name: letsencrypt
+              # Enable the HTTP-01 challenge provider
+              solvers:
+              - http01:
+                  ingress:
+                    class:  nginx
