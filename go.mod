@@ -11,6 +11,6 @@ require (
 	github.com/onsi/ginkgo v1.11.0
 	github.com/onsi/gomega v1.4.3
 	github.com/rs/cors v1.7.0
-	golang.org/x/sys v0.0.0-20191218084908-4a24b4065292 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
 )
